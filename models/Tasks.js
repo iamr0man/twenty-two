@@ -1,17 +1,15 @@
 const mongoose = require('mongoose')
 
-const TasksScmema = mongoose.Schema({
+const TasksSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
   value: [
     {
-      name: String,
-      color: String,
-      type: {
-        type: String,
-        enum: ['main', 'secoundary']
+      task: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task"
       }
     }
   ],
@@ -21,4 +19,4 @@ const TasksScmema = mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Tasks', TasksScmema)
+module.exports = mongoose.model('Board', TasksSchema)

@@ -20,11 +20,7 @@ const PassionSchema = mongoose.Schema({
         default: Date.now
       }
     }
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  ]
 })
 
 module.exports = mongoose.model('Passion', PassionSchema)

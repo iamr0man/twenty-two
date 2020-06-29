@@ -21,10 +21,10 @@ if(process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
-app.use('/', require('./routes/user'))
-app.use('/tasks', require('./routes/tasks'))
-// app.use('/passion', require('./routes/passion'))
-// app.use('/language', require('./routes/language'))
+app.use('/api/', require('./routes/user'))
+app.use('/api/tasks', require('./routes/tasks'))
+app.use('/api/passion', require('./routes/passion'))
+// app.use('/api/language', require('./routes/language'))
 
 const PORT = process.env.PORT || 3003
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`))

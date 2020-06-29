@@ -4,7 +4,7 @@ const router = express.Router()
 const User = require('../models/User')
 
 // @desc   Get user
-// @route  GET /
+// @route  GET api/
 router.get('/', async(req, res) => {
   try {
     const user = await User.findById(req.body.id).populate('tasks')
@@ -15,7 +15,7 @@ router.get('/', async(req, res) => {
 })
 
 // @desc   Create user for test
-// @route  POST /
+// @route  POST api/
 router.post('/', async(req, res) => {
   try {
     const user = await User.create(req.body)

@@ -32,22 +32,30 @@ const UserScmema = mongoose.Schema({
       }
     }
   ],
-  tasks: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Tasks'
-  },
-  passion: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Passion'
-  },
+  tasks: [
+    {
+      board: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tasks'
+      }
+    }
+  ],
+  passion: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Passion'
+    }
+  ],
   // TODO
   // budget: {
   //   type: Array 
   // },
-  language: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Language'
-  },
+  language: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Language'
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now

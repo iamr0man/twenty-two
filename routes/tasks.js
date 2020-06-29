@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 const Tasks = require('../models/Tasks')
+const Task = require('../models/Task')
 
 // @desc   Get all tasks
-// @route  GET /tasks/:id
-router.get('/:id', async(req, res) => {
+// @route  GET api/tasks/all/:id
+router.get('/all/:id', async(req, res) => {
   try {
     let tasks = await Tasks.findOne({ _id: req.params.id })
     res.status(200).json(tasks) 
@@ -15,11 +16,13 @@ router.get('/:id', async(req, res) => {
 })
 
 // @desc   Get single task
-// @route  GET /tasks/single/:id
+// @route  GET api/tasks/:id
 router.get('/single/:id', async(req, res) => {
   try {
     let tasks = await Tasks.findOne({ _id: req.params.id })
+
     const task = tasks.value.find(i => i._id === req.body.value)
+
     res.status(200).json(task) 
   } catch (err) {
     console.log(err)
@@ -27,7 +30,7 @@ router.get('/single/:id', async(req, res) => {
 })
 
 // @desc   Create user tasks
-// @route  POST /tasks
+// @route  POST api/tasks
 router.post('/', async(req, res) => {
   try {
     let tasks = await Tasks.create(req.body)
@@ -38,12 +41,25 @@ router.post('/', async(req, res) => {
 })
 
 // @desc   Update user task
-// @route  PUT /tasks/:id
+// @route  PUT api/tasks/:id
 router.put('/:id', async(req, res) => {
   try {
-    const tasks = await Tasks.findOneAndUpdate({ _id: req.params.id }, { value: req.body.value }, {
-      new: true
+    const tasks = await User.findOne({ _id: req.params.id })
+    console.log(tasks)
+    const { user, name, color, type, status } = req.body
+
+    const newTask = await Task.create({
+      user,
+      parentId: req.params.id,
+      name,
+      color,
+      type,
+      status
     })
+    
+    tasks.value.push(newTask)
+    await tasks.save()
+    
     res.status(200).json(tasks)
   } catch (err) {
     console.log(err)
@@ -51,8 +67,8 @@ router.put('/:id', async(req, res) => {
 })
 
 // @desc   Delete user task
-// @route  DELETE /tasks/:id
-router.put('/:id', async(req, res) => {
+// @route  DELETE api/tasks/:id
+router.delete('/:id', async(req, res) => {
   try {
     const tasks = await Tasks.findOne({ _id: req.params.id })
     if(!tasks) {
@@ -60,7 +76,10 @@ router.put('/:id', async(req, res) => {
     }
 
     const index = tasks.value.find(i => i._id === req.body.id)
+
     const deleted = tasks.value.splice(index, 1)
+
+    await tasks.save()
 
     res.status(200).json(deleted) // ask about undo action
   } catch (err) {
