@@ -8,7 +8,7 @@ const connectDB = async() => {
             useFindAndModify: false 
         })
         console.log('Mongo Connected')
-    } catch(e) {
+    } catch(err) {
         console.error(err.message)
         process.exit(1)
     }

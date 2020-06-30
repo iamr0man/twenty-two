@@ -19,46 +19,6 @@ const UserScmema = mongoose.Schema({
   },
   image: {
     type: String
-  },
-  rating: [
-    {
-      amount: {
-        type: Number,
-        default: 0
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-  tasks: [
-    {
-      board: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tasks'
-      }
-    }
-  ],
-  passion: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Passion'
-    }
-  ],
-  // TODO
-  // budget: {
-  //   type: Array 
-  // },
-  language: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Language'
-    }
-  ],
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
 })
 

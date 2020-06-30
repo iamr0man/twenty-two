@@ -45,7 +45,7 @@ router.post('/', async(req, res) => {
 router.put('/:id', async(req, res) => {
   try {
     const tasks = await User.findOne({ _id: req.params.id })
-    console.log(tasks)
+
     const { user, name, color, type, status } = req.body
 
     const newTask = await Task.create({
