@@ -55,10 +55,31 @@ const ProfileScmema = mongoose.Schema({
       }
     }
   ],
-  // TODO
-  // budget: {
-  //   type: Array 
-  // },
+  budget: [
+    {
+      category: {
+        type: mongoose.Schema.Types.ObjectId,
+        name: 'Category'
+      },
+      money: {
+        type: String,
+        require: true
+      },
+      day: {
+        type: Date,
+        require: true
+      },
+      note: String,
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+      // location: {
+      //   longitude: String,
+      //   lantitude: String
+      // }
+    },
+  ],
   language: [
     {
       videoLink: {

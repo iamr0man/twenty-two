@@ -23,6 +23,7 @@ if(process.env.NODE_ENV === 'development') {
 
 app.use('/api/', require('./routes/user'))
 app.use('/api/profile', require('./routes/profile'))
+app.use('/api/category', require('./routes/category'))
 
 const PORT = process.env.PORT || 3003
 app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`))

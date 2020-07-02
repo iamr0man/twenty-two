@@ -27,20 +27,6 @@ router.get('/note/all/:id', async(req, res) => {
   }
 })
 
-// @desc   Get single note
-// @route  GET api/passion/:id
-// router.get('/single/:id', async(req, res) => {
-  // try {
-  //   let notes = await Profile.findOne({ _id: req.params.id })
-
-  //   const note = notes.value.find(i => i._id === req.body.value)
-
-  //   res.status(200).json(note) 
-  // } catch (err) {
-  //   console.log(err)
-  // }
-// })
-
 // @desc   Create user passion notes
 // @route  POST api/profile/note
 router.post('/note', async(req, res) => {
@@ -111,20 +97,6 @@ router.get('/language/all/:id', async(req, res) => {
   }
 })
 
-// @desc   Get single note
-// @route  GET api/passion/:id
-// router.get('/single/:id', async(req, res) => {
-  // try {
-  //   let notes = await Profile.findOne({ _id: req.params.id })
-
-  //   const note = notes.value.find(i => i._id === req.body.value)
-
-  //   res.status(200).json(note) 
-  // } catch (err) {
-  //   console.log(err)
-  // }
-// })
-
 // @desc   Create user language notes
 // @route  POST api/profile/language
 router.post('/language', async(req, res) => {
@@ -186,34 +158,50 @@ router.delete('/language/:id', async(req, res) => {
 
 // -----------------------------------------------------------------------------
 
-// @desc   Get all tasks
-// @route  GET api/tasks/profile/all/
-router.get('/task/all/:id', async(req, res) => {
+// @desc   Get last board
+// @route  GET api/profile/task/:id
+router.get('/task/:id', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.id)
-    res.status(200).json(profile.tasks).populate('task') 
+    const lastTasks = profile.tasks.length - 1
+    res.status(200).json(profile.tasks[lastTasks])
   } catch (err) {
     console.log(err)
   }
 })
 
-// @desc   Get single note
-// @route  GET api/passion/:id
-// router.get('/single/:id', async(req, res) => {
-  // try {
-  //   let notes = await Profile.findOne({ _id: req.params.id })
+// @desc   Get all boards
+// @route  GET api/profile/task/all/:id
+router.get('/task/all/:id', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    res.status(200).json(profile.tasks) 
+  } catch (err) {
+    console.log(err)
+  }
+})
 
-  //   const note = notes.value.find(i => i._id === req.body.value)
-
-  //   res.status(200).json(note) 
-  // } catch (err) {
-  //   console.log(err)
-  // }
-// })
-
-// @desc   Create task
-// @route  POST api/profile/task
+// @desc   Create single task
+// @route  POST api/profile/task/
 router.post('/task', async(req, res) => {
+  try {
+    const profile = await Profile.findOne({ _id: req.body.id })
+
+    const lastTasks = profile.tasks.length - 1
+    if(profile.tasks[lastTasks].createdAt.getDate() !== new Date().getDate()) {
+      profile.tasks.push({})
+    }
+
+    await profile.save()
+    res.json(profile.tasks)
+
+  } catch (err) {
+    console.log(err)
+  }
+})
+// @desc   Create single task
+// @route  PUT api/profile/task/:tasksIdProfile
+router.put('/task/:id', async(req, res) => {
   try {
 
     const newTask = {
@@ -223,9 +211,11 @@ router.post('/task', async(req, res) => {
       status: req.body.status
     }
 
-    let profile = await Profile.findOne({ _id: req.body.id })
-    console.log(profile)
-    profile.tasks[0].task.unshift(newTask)
+    let profile = await Profile.findOne({ _id: req.params.id })
+
+    const index = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
+
+    profile.tasks[index].task.unshift(newTask)
 
     await profile.save()
 
@@ -235,37 +225,44 @@ router.post('/task', async(req, res) => {
   }
 })
 
-// @desc   Update user passion note
-// @route  PUT api/profile/note/:id
-router.put('/note/:id', async(req, res) => {
+// @desc   Update user taks
+// @route  PUT api/profile/task/single/:profileId
+router.put('/task/single/:id', async(req, res) => {
   try {
-    const notes = await Profile.findById(req.params.id)
+    const profile = await Profile.findById(req.params.id)
 
-    const note = notes.passion.filter(i => `${i._id}` === req.body.value)[0]
+    const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
 
-    if(req.body.image) { note.image = req.body.image}
-    if(req.body.description) { note.description = req.body.description}
+    const task = profile.tasks[boardIndex].task.filter(v => `${v._id}` === req.body.taskId)[0]
+
+    if(req.body.name) { task.name = req.body.name}
+    if(req.body.color) { task.color = req.body.color}
+    if(req.body.type) { task.type = req.body.type}
+    if(req.body.status) { task.status = req.body.status}
+
+    await profile.save()
     
-    await notes.save()
-    
-    res.status(200).json(notes.passion)
+    res.status(200).json(profile.tasks)
   } catch (err) {
     console.log(err)
   }
 })
 
 // @desc   Delete user passion note
-// @route  DELETE api/profile/note/:id
-router.delete('/note/:id', async(req, res) => {
+// @route  DELETE api/profile/task/:id
+router.delete('/task/single/:id', async(req, res) => {
   try {
-    const notes = await Profile.findById(req.params.id)
+    const profile = await Profile.findById(req.params.id)
 
-    const removeIndex = notes.passion.map(i => i._id).indexOf(req.body.value)
-    notes.passion.splice(removeIndex, 1)
+    const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
     
-    await notes.save()
+    const taskIndex = profile.tasks[boardIndex].task.map(v => v._id).indexOf(req.body.taskId)
+
+    profile.tasks[boardIndex].task.splice(taskIndex, 1)
     
-    res.status(200).json(notes.passion) // ask about undo action
+    await profile.save()
+    
+    res.status(200).json(profile.tasks[boardIndex])
   } catch (err) {
     console.log(err)
   }
