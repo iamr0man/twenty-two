@@ -63,16 +63,12 @@ const ProfileScmema = mongoose.Schema({
       },
       money: {
         type: String,
-        require: true
-      },
-      day: {
-        type: Date,
-        require: true
+        required: true
       },
       note: String,
       createdAt: {
         type: Date,
-        default: Date.now
+        required: true
       }
       // location: {
       //   longitude: String,
