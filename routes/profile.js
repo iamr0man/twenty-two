@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Profile = require('../models/Profile')
+const checkTaskStatus = require('../helpers/checkTaskType')
 
 // @desc   Create profile for test
 // @route  POST api/profile
@@ -181,7 +182,7 @@ router.get('/task/all/:id', async(req, res) => {
   }
 })
 
-// @desc   Create single task
+// @desc   Create single board
 // @route  POST api/profile/task/
 router.post('/task', async(req, res) => {
   try {
@@ -190,6 +191,7 @@ router.post('/task', async(req, res) => {
     const lastTasks = profile.tasks.length - 1
     if(profile.tasks[lastTasks].createdAt.getDate() !== new Date().getDate()) {
       profile.tasks.push({})
+      profile.rating.push({})
     }
 
     await profile.save()
@@ -200,32 +202,32 @@ router.post('/task', async(req, res) => {
   }
 })
 // @desc   Create single task
-// @route  PUT api/profile/task/:tasksIdProfile
-router.put('/task/:id', async(req, res) => {
+// @route  PUT api/profile/task/single/:tasksIdProfile
+router.post('/task/single/:id', async(req, res) => {
   try {
 
     const newTask = {
       name: req.body.name,
       color: req.body.color,
-      type: req.body.type,
-      status: req.body.status
+      relationships: req.body.relationships,
+      type: req.body.type
     }
 
     let profile = await Profile.findOne({ _id: req.params.id })
 
     const index = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
 
-    profile.tasks[index].task.unshift(newTask)
+    profile.tasks[index].task.push(newTask)
 
     await profile.save()
 
-    res.json(profile) 
+    res.json(profile.tasks) 
   } catch (err) {
     console.log(err)
   }
 })
 
-// @desc   Update user taks
+// @desc   Update user task
 // @route  PUT api/profile/task/single/:profileId
 router.put('/task/single/:id', async(req, res) => {
   try {
@@ -234,15 +236,20 @@ router.put('/task/single/:id', async(req, res) => {
     const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
 
     const task = profile.tasks[boardIndex].task.filter(v => `${v._id}` === req.body.taskId)[0]
-
+    
+    // check changes with type and status
+    const lastElem = profile.rating.length - 1
+    profile.rating[lastElem || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
+    
     if(req.body.name) { task.name = req.body.name}
     if(req.body.color) { task.color = req.body.color}
-    if(req.body.type) { task.type = req.body.type}
-    if(req.body.status) { task.status = req.body.status}
+    if(req.body.relationships) { task.relationships = req.body.relationships}
+    if(req.body.type) { task.type = req.body.type }
+    if(req.body.status) { task.status = req.body.status }
 
     await profile.save()
     
-    res.status(200).json(profile.tasks)
+    res.status(200).json(profile)
   } catch (err) {
     console.log(err)
   }

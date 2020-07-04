@@ -23,13 +23,25 @@ const ProfileScmema = mongoose.Schema({
         {
           name: String,
           color: String,
+          relationships: [
+            {
+              kind: {
+                type: String,
+                enum: ['family', 'career', 'sleep', 'friends', 'fitness']
+              },
+              amount: {
+                type: Number
+              }
+            },
+          ],
           type: {
             type: String,
             enum: ['main', 'secondary']
           },
           status: {
             type: String,
-            enum: ['completed', 'not finished']
+            enum: ['completed', 'not finished'],
+            default: 'not finished'
           }
         }
       ],
@@ -65,7 +77,9 @@ const ProfileScmema = mongoose.Schema({
         type: String,
         required: true
       },
-      note: String,
+      note: {
+        type: String
+      },
       createdAt: {
         type: Date,
         required: true
