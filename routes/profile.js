@@ -11,14 +11,40 @@ router.post('/', async(req, res) => {
     const profile = await Profile.create({
       user: req.body.user
     })
+
+    const newTask = {
+      name: 'Download this app',
+      color: 'violet',
+      type: 'secondary'
+    }
+
+    profile.tasks.push({})
+    profile.tasks[0].task.push(newTask)
+
+    profile.rating.push({})
+
+    profile.save()
+    
     res.status(201).json(profile)
   } catch (err) {
     console.log(err)
   }
 })
 
+// @desc  Get profile
+// @route GET api/profile/
+router.get('/', async(req, res) => {
+  try {
+    let profile = await Profile.findById(req.body.id)
+    res.status(200).json(profile) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+
 // @desc   Get all passion notes
-// @route  GET api/note/profile/all/
+// @route  GET api/profile/note/all/
 router.get('/note/all/:id', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.id)

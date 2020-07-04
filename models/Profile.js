@@ -30,7 +30,9 @@ const ProfileScmema = mongoose.Schema({
                 enum: ['family', 'career', 'sleep', 'friends', 'fitness']
               },
               amount: {
-                type: Number
+                type: Number,
+                min: 0,
+                max: 3
               }
             },
           ],
