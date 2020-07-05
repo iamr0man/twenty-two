@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Kyiv';
+  src: local('Kyiv Regular'), local('Kyiv-Regular'),
+    url('../fonts/Kyiv*SansBeta-Regular3.ttf') format('ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Kyiv";
+  src: url("../fonts/Kyiv*SansBeta-Bold3.ttf") format("ttf");
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Kyiv";
+  src: url("../fonts/Kyiv*SansBeta-Black3.ttf") format("ttf");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Kyiv";
+  src: url("../fonts/Kyiv*SansBeta-Light3.ttf") format("ttf");
+  font-weight: 100;
+}
