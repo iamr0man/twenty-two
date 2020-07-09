@@ -6,10 +6,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     currentTask: {
-      labels: [{
-        color: "#fdad1d",
-        name: "high priority"
-      }],
+      labels: [
+        {
+          color: "#fdad1d",
+          name: "high priority"
+        }
+      ],
       name: "Write Project",
       status: "not finished"
     }

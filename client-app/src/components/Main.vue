@@ -124,7 +124,10 @@ export default {
 
 <style lang="scss">
 .main {
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 130px;
   height: calc(100% - 68px);
   display: flex;
   flex-direction: column;
@@ -192,23 +195,11 @@ export default {
         justify-content: space-around;
         flex-direction: column;
         width: 20%;
-        max-height: 190px;
-        background-color: #00000075;
-        // border-radius: 40px;
+        max-height: 260px;
+        border-radius: 20px;
         padding: 10px;
-        box-shadow: -3px -3px 20px 10px black;
-
+        box-shadow: 0px 20px 20px 10px #d8dcdf;
         z-index: 2;
-
-        .relationship__layout {
-          position: absolute;
-          width: 115%;
-          height: 140%;
-          top: 20px;
-          left: -22px;
-          background-color: #00000047;
-          z-index: -1;
-        }
 
         .relationship__line {
           width: 90%;
@@ -253,27 +244,24 @@ export default {
       .main__rating {
         width: 40%;
         min-height: 270px;
-        box-shadow: -3px -3px 20px 10px black;
+        box-shadow: inset 0px 10px 20px 0px #00000082;
         margin: 0px 35px 10px;
         padding: 20px;
-
         align-self: flex-end;
-
         background: repeating-linear-gradient(
           90deg,
-          #505050,
-          #505050 calc(100% - 99.5%),
-          #00000075 calc(100% - 99.5%),
-          #00000075 calc(100% - 85%)
+          #ffffff,
+          #ffffff calc(100% - 99.5%),
+          #d1d9d6 calc(100% - 99.5%),
+          #d1d9d6 calc(100% - 85%)
         );
-        border: 20px solid black;
         border-radius: 30px;
 
         svg {
           margin: 33px 0px;
           g {
             text {
-              color: white;
+              color: #000;
               font-size: 10px;
             }
           }
@@ -284,21 +272,31 @@ export default {
     &__navigation {
       justify-content: center;
       .navigation__item {
-        flex: 0 1 35%;
-        height: 140px;
+        flex: 0 1 20%;
+        min-height: 200px;
+        margin: 0 50px 50px 0;
+        border-radius: 60px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         &:nth-child(1) {
-          background-color: #fdaf1dcc;
+          // background-color: #fdaf1dcc;
+          background-color: #ffa407;
         }
 
         &:nth-child(2) {
-          background-color: #ff00ffcc;
+          // background-color: #ff00ffcc;
+          background-color: #cd6a7e;
         }
         &:nth-child(3) {
           background-color: #ffffff2e;
         }
         &:nth-child(4) {
-          background-color: #2a9cc1;
+          // background-color: #2a9cc1;
+          background-color: #6fccd1;
         }
       }
     }

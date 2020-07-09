@@ -1,8 +1,12 @@
 <template>
   <div class="manager">
-    <v-card-title class="manager__header header"><h3>Main Tasks</h3></v-card-title>
+    <v-card-title class="manager__header header"
+      ><h3>Main Tasks</h3></v-card-title
+    >
     <task v-for="(v, i) in 3" :task="tasks[i]" :key="i" />
-    <v-card-title class="manager__subheader header"><h3>Secondary Tasks</h3></v-card-title>
+    <v-card-title class="manager__subheader header"
+      ><h3>Secondary Tasks</h3></v-card-title
+    >
     <task v-for="(v, i) in 8" :task="tasks[i + 3]" :key="i + 3" />
     <v-card-actions v-if="tasks.length < 12" class="mt-2">
       <v-btn color="#2196f382" class="manager__add-button">Add</v-btn>
@@ -19,17 +23,61 @@ export default {
   data() {
     return {
       tasks: [
-        { name: "Work Hard", status: 'completed', labels: [{ name: 'priority', color: "#fdad1d"}] },
-        { name: "Do exercises", status: 'completed', labels: [{ name: 'low priority', color: "#fdad1d"}] },
-        { name: "Write Project", status: 'not finished', labels: [{ name: 'high priority', color: "#fdad1d"}] },
-        { name: "Sleep", status: 'completed', labels: [{ name: 'priority', color: "#fdad1d"}] },
-        { name: "Clean Room", status: 'completed', labels: [{ name: 'low priority', color: "#fdad1d"}] },
-        { name: "Read book", status: 'not finished', labels: [{ name: 'high priority', color: "#fdad1d"}] },
-        { name: "Listen audio", status: 'completed', labels: [{ name: 'low priority', color: "#fdad1d"}] },
-        { name: "Help Sasha", status: 'completed', labels: [{ name: 'priority', color: "#fdad1d"}] },
-        { name: "Call lead", status: 'completed', labels: [{ name: 'low priority', color: "#fdad1d"}] },
-        { name: "Write Notes", status: 'not finished', labels: [{ name: 'priority', color: "#fdad1d"}] },
-        { name: "Analyze day", status: 'completed', labels: [{ name: 'in progress', color: "#fdad1d"}] }
+        {
+          name: "Work Hard",
+          status: "completed",
+          labels: [{ name: "priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Do exercises",
+          status: "completed",
+          labels: [{ name: "low priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Write Project",
+          status: "not finished",
+          labels: [{ name: "high priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Sleep",
+          status: "completed",
+          labels: [{ name: "priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Clean Room",
+          status: "completed",
+          labels: [{ name: "low priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Read book",
+          status: "not finished",
+          labels: [{ name: "high priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Listen audio",
+          status: "completed",
+          labels: [{ name: "low priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Help Sasha",
+          status: "completed",
+          labels: [{ name: "priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Call lead",
+          status: "completed",
+          labels: [{ name: "low priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Write Notes",
+          status: "not finished",
+          labels: [{ name: "priority", color: "#fdad1d" }]
+        },
+        {
+          name: "Analyze day",
+          status: "completed",
+          labels: [{ name: "in progress", color: "#fdad1d" }]
+        }
       ]
     };
   }
