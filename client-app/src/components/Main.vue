@@ -84,7 +84,9 @@
       </div>
       <div class="navigation__item">
         <img src="../assets/images/passion.svg" alt="" class="item__logo" />
-        <div class="item__value">passion</div>
+        <div class="item__value">
+          <router-link class="router-link" to="/passion">passion</router-link>
+        </div>
         <div class="item__additional">
           89
           <p>notes</p>
@@ -126,7 +128,7 @@ export default {
 .main {
   width: 80%;
   margin: 0 auto;
-  background: #fff;
+  background: #ecf0f3;
   border-radius: 130px;
   height: calc(100% - 68px);
   display: flex;
@@ -198,7 +200,10 @@ export default {
         max-height: 260px;
         border-radius: 20px;
         padding: 10px;
-        box-shadow: 0px 20px 20px 10px #d8dcdf;
+        background: #f0f0f3;
+        box-shadow:
+          inset -10px -10px 10px 0 #ffffffb8,
+          inset 10px 10px 10px 0 #aeaec054;
         z-index: 2;
 
         .relationship__line {
@@ -276,6 +281,9 @@ export default {
         min-height: 200px;
         margin: 0 50px 50px 0;
         border-radius: 60px;
+        box-shadow: 
+          3px 3px 8px #b1b1b1,
+          -3px -3px 8px #fff;
 
         display: flex;
         flex-direction: column;

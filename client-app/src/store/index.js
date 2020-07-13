@@ -3,20 +3,12 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+import profile from './modules/profile'
+import passion from './modules/passion'
+
 export default new Vuex.Store({
-  state: {
-    currentTask: {
-      labels: [
-        {
-          color: "#fdad1d",
-          name: "high priority"
-        }
-      ],
-      name: "Write Project",
-      status: "not finished"
-    }
-  },
-  mutations: {},
-  actions: {},
-  modules: {}
+  modules: {
+    profile,
+    passion
+  }
 });
