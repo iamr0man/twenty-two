@@ -1,6 +1,7 @@
 // const path = require('path')
 const express = require('express')
 const dotenv = require('dotenv')
+const cors = require('cors')
 const connectDB = require('./config/db')
 const morgan = require('morgan')
 
@@ -12,6 +13,8 @@ connectDB();
 
 const app = express();
 
+//Init Middleware
+app.use(cors())
 // Url and json parse
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())

@@ -45,10 +45,22 @@ router.get('/', async(req, res) => {
 
 // @desc   Get all passion notes
 // @route  GET api/profile/note/all/
-router.get('/note/all/:id', async(req, res) => {
+router.get('/:profileId/note/all', async(req, res) => {
   try {
-    let profile = await Profile.findById(req.params.id)
+    let profile = await Profile.findById(req.params.profileId)
     res.status(200).json(profile.passion) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get all passion notes
+// @route  GET api/profile/note/all/
+router.get('/:profileId/note/:noteId', async(req, res) => {
+  try {
+    let profile = await Profile.findById(req.params.profileId)
+    let note = profile.passion.filter(v => `${v._id}` === req.params.noteId)[0]
+    res.status(200).json(note) 
   } catch (err) {
     console.log(err)
   }
@@ -56,7 +68,7 @@ router.get('/note/all/:id', async(req, res) => {
 
 // @desc   Create user passion notes
 // @route  POST api/profile/note
-router.post('/note', async(req, res) => {
+router.post('/:profileId/note/', async(req, res) => {
   try {
 
     const newNote = {
@@ -64,7 +76,7 @@ router.post('/note', async(req, res) => {
       description: req.body.description
     }
 
-    let profile = await Profile.findOne({ _id: req.body.id })
+    let profile = await Profile.findOne({ _id: req.params.profileId })
     profile.passion.unshift(newNote)
 
     await profile.save()

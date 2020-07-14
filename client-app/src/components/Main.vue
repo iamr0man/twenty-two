@@ -201,8 +201,7 @@ export default {
         border-radius: 20px;
         padding: 10px;
         background: #f0f0f3;
-        box-shadow:
-          inset -10px -10px 10px 0 #ffffffb8,
+        box-shadow: inset -10px -10px 10px 0 #ffffffb8,
           inset 10px 10px 10px 0 #aeaec054;
         z-index: 2;
 
@@ -281,9 +280,7 @@ export default {
         min-height: 200px;
         margin: 0 50px 50px 0;
         border-radius: 60px;
-        box-shadow: 
-          3px 3px 8px #b1b1b1,
-          -3px -3px 8px #fff;
+        box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #fff;
 
         display: flex;
         flex-direction: column;

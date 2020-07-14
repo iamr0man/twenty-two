@@ -1,35 +1,40 @@
 <template>
   <div class="passion">
     <div class="passion__header">
-      <h3>Passion</h3>
+      <h3>Passion Details</h3>
     </div>
-    <div class="passion__item" v-for="(v, i) in passions" :key="i">
-      <img class="passion__item-image" :src="v.image" alt="passion image" />
-      <p class="passion__item-description">{{ v.description }}</p>
-      <img class="passion__item-edit" @click="jumpToDetails(v)"  src="../assets/images/pencil.svg" alt="edit pencil">
+    <div class="passion__item">
+      <img class="passion__item-image" :src="currentPassion.image" alt="passion image" />
+      <v-textarea class="passion__item-description" v-model="newDescription" />
+      <img class="passion__item-edit" @click="acceptEdits"  src="../assets/images/tick.svg" alt="accept button">
     </div>
     <!-- <v-btn color="#2196f382" class="passion__add-button">Add</v-btn> -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from "vuex"
+
 export default {
-  beforeMount() {
-    this.$store.dispatch("passion/getPassionCards", {
-      profileId: this.current
-    });
-  },
   data() {
-    return {};
+    return {
+      newDescription: ''
+    }
+  },
+  async mounted () {
+    await this.$store.dispatch("passion/getPassionCard", {
+      profileId: this.$route.params.profileId,
+      noteId: this.$route.params.noteId
+    });
+    this.newDescription = this.currentPassion.description
   },
   computed: {
-    ...mapGetters("profile", ["current"]),
-    ...mapGetters("passion", ["passions"])
+    ...mapGetters("passion", ["currentPassion"])
   },
   methods: {
-    jumpToDetails(v) {
-      this.$router.push({ name: 'PassionDetails', params: { profileId: this.current, noteId: v._id } });
+    acceptEdits() {
+      this.$store.dispatch('passion/updatepassion', { newDescription: this.newDescription })
+      console.log(this.$router.push({ name: 'PassionDetails', params: { } }));
     }
   }
 };

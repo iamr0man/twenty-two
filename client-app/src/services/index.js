@@ -1,3 +1,3 @@
-import PassionApi from './api/passion'
+import PassionApi from "./api/passion";
 
-export { PassionApi }
+export { PassionApi };
