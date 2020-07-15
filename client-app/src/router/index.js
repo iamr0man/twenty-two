@@ -5,6 +5,7 @@ import Manager from "../views/Manager.vue";
 import TaskDetails from "../views/TaskDetails.vue";
 import Passion from "../views/Passion.vue";
 import PassionDetails from "../views/PassionDetails.vue";
+import PassionEdit from "../views/PassionEdit.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/passion/:profileId/note/:noteId",
     name: "PassionDetails",
     component: PassionDetails
+  },
+  {
+    path: "/passion/:profileId/note/:noteId/edit",
+    name: "PassionEdit",
+    component: PassionEdit
   }
   // {
   //   path: "/manager/:managerId/task/:taskId",

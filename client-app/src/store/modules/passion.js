@@ -28,19 +28,21 @@ export default {
       }
     },
     // eslint-disable-next-line
-    async getPhoto({ commit }, {formData}) {
-      return await PassionApi.getPhotoURL(formData);
+    async getImageLink({ commit }, { formData }) {
+      return await PassionApi.getImageLink(formData);
     },
-    async createPost(
-      { commit },
-      { title, shortDescription, description, preview }
-    ) {
-      const { data } = await PassionApi.createPost(
-        title,
-        shortDescription,
-        description,
-        preview
+    async updatePassionCard({ commit }, { profileId, noteId, newNote }) {
+      const { data } = await PassionApi.updatePassionCard(
+        profileId,
+        noteId,
+        newNote
       );
+      if (data) {
+        commit("SET_PASSION", data);
+      }
+    },
+    async createPassionCard({ commit }, { profileId, newNote }) {
+      const { data } = await PassionApi.createPassionCard(profileId, newNote);
       if (data) {
         commit("SET_PASSION", data);
       }
