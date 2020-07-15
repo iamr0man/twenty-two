@@ -70,9 +70,11 @@ router.get('/:profileId/note/:noteId', async(req, res) => {
 // @route  POST api/profile/note
 router.post('/:profileId/note/', async(req, res) => {
   try {
-
     const newNote = {
       image: req.body.image,
+      name: req.body.name,
+      level: req.body.level,
+      resource: req.body.resource,
       description: req.body.description
     }
 
@@ -89,13 +91,16 @@ router.post('/:profileId/note/', async(req, res) => {
 
 // @desc   Update user passion note
 // @route  PUT api/profile/note/:id
-router.put('/note/:id', async(req, res) => {
+router.put('/:profileId/note/:noteId', async(req, res) => {
   try {
-    const notes = await Profile.findById(req.params.id)
+    const notes = await Profile.findById(req.params.profileId)
 
-    const note = notes.passion.filter(i => `${i._id}` === req.body.value)[0]
+    const note = notes.passion.filter(i => `${i._id}` === req.params.noteId)[0]
 
     if(req.body.image) { note.image = req.body.image}
+    if(req.body.name) { note.name = req.body.name}
+    if(req.body.level) { note.level = req.body.level}
+    if(req.body.resource) { note.resource = req.body.resource}
     if(req.body.description) { note.description = req.body.description}
     
     await notes.save()

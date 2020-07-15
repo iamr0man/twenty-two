@@ -55,9 +55,22 @@ const ProfileScmema = mongoose.Schema({
   ],
   passion: [
     {
+      name: {
+        type: String,
+        default: ''
+      },
       image: {
         type: String,
         default: ''
+      },
+      resource: {
+        type: String,
+        default: 'work'
+      },
+      level: {
+        type: String,
+        enum: ['essential', 'medium', 'advanced'],
+        default: 'essential'
       },
       description: {
         type: String,
