@@ -1,7 +1,7 @@
 <template>
   <div class="passion">
     <div class="passion__header">
-      <h3>Passion Details</h3>
+      <h3>Passion Edit</h3>
     </div>
     <v-form>
       <div class="passion__item">
@@ -10,7 +10,8 @@
           prepend-icon="mdi-camera"
           v-model="newImage"
           multiple
-          label="Image:"
+          label="Image: Testing"
+          disabled
         />
         <v-text-field
           class="passion__item-name"
@@ -104,7 +105,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100vw;
-  background-color: #f3dddd;
+  height: 100vh;
+  background-color: #fa7143;
 
   &__header {
     border-radius: 10px;
@@ -117,11 +119,14 @@ export default {
   }
 
   &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 60px;
     margin: 20px;
     border-radius: 50px;
-    background: #f3dddd;
-    box-shadow: 20px 20px 60px #cfbcbc, -20px -20px 60px #fffefe;
+    background: #fa7143;
+    box-shadow: 10px 10px 15px #cfbcbc, -10px -10px 15px #fffefe;
 
     &-image {
       width: 100%;
@@ -132,8 +137,8 @@ export default {
       padding: 20px;
       margin-top: 16px;
       border-radius: 50px;
-      background: #f3dddd;
-      box-shadow: inset 10px 10px 30px #cfbcbc, inset -10px -10px 30px #fffefe;
+      background: #fa7143;
+      box-shadow: inset 5px 5px 8px #cfbcbc, inset -5px -5px 12px #fffefe;
     }
     &-edit {
       margin-top: 20px;
@@ -152,6 +157,13 @@ export default {
     background-color: #04f615;
     border-radius: 3px;
     text-align: center;
+  }
+
+  @media screen and (min-width: 1000px) {
+    align-items: center;
+    &__item { 
+      min-width: 600px;
+    }
   }
 }
 </style>

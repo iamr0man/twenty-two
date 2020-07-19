@@ -41,8 +41,10 @@ export default {
 .passion {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100vw;
-  background-color: #f3dddd;
+  height: 100vh;
+  background-color: #fa7143;
 
   &__header {
     border-radius: 10px;
@@ -50,6 +52,7 @@ export default {
     color: #1b1b1b;
 
     h3 {
+      font-size: 34px;
       font-weight: 900;
     }
   }
@@ -58,14 +61,15 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 95%;
     color: #000;
     text-decoration: none;
     font-weight: 600;
     padding: 20px;
     margin: 20px;
     border-radius: 50px;
-    background: #f3dddd;
-    box-shadow: 20px 20px 60px #cfbcbc, -20px -20px 60px #fffefe;
+    background: #fa7143;
+    box-shadow: 10px 10px 15px #cfbcbc, -10px -10px 15px #fffefe;
 
     &-circle {
       width: 90px;
@@ -109,6 +113,12 @@ export default {
     background-color: #04f615;
     border-radius: 3px;
     text-align: center;
+  }
+
+  @media screen and (min-width: 600px) {
+    &__item {
+      max-width: 600px;
+    }
   }
 }
 </style>

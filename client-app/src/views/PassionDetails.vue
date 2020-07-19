@@ -10,16 +10,16 @@
         alt="passion image"
       />
       <div class="passion__details">
-        <p class="passion__details-level">{{ currentPassion.level }}</p>
-        <p class="passion__details-resource">{{ currentPassion.resource }}</p>
+        <p class="passion__details-level"><span>Level=?:</span> {{ currentPassion.level }}</p>
+        <p class="passion__details-resource"><span>Resource=?:</span> {{ currentPassion.resource }}</p>
+        <p class="passion__details-description"><span>Description=?:</span> {{ currentPassion.description }}</p>
+        <img
+          class="passion__details-edit"
+          @click="jumpToDetails"
+          src="../assets/images/pencil.svg"
+          alt="edit pencil"
+        />
       </div>
-      <p class="passion__item-description">{{ currentPassion.description }}</p>
-      <img
-        class="passion__item-edit"
-        @click="jumpToDetails"
-        src="../assets/images/pencil.svg"
-        alt="edit pencil"
-      />
     </div>
     <!-- <v-btn color="#2196f382" class="passion__add-button">Add</v-btn> -->
   </div>
@@ -56,8 +56,9 @@ export default {
 .passion {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  background-color: #f3dddd;
+  align-items: center;
+  width: 100%;
+  background-color: #fa7143;
 
   &__header {
     border-radius: 10px;
@@ -70,27 +71,40 @@ export default {
   }
 
   &__item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 60px;
     margin: 20px;
     border-radius: 50px;
-    background: #f3dddd;
-    box-shadow: 20px 20px 60px #cfbcbc, -20px -20px 60px #fffefe;
+    background: #fa7143;
+    box-shadow: 10px 10px 15px #cfbcbc, -10px -10px 15px #fffefe;
 
     &-image {
       width: 100%;
       border-radius: 50px;
     }
 
-    &-description {
+    .passion__details {
+      position: relative;
       padding: 20px;
       margin-top: 16px;
       border-radius: 50px;
-      background: #f3dddd;
-      box-shadow: inset 10px 10px 30px #cfbcbc, inset -10px -10px 30px #fffefe;
-    }
-    &-edit {
-      width: 30px;
-      margin-top: 20px;
+      background: #fa7143;
+      box-shadow: inset 5px 5px 8px #cfbcbc, inset -5px -5px 12px #fffefe;
+      
+      p span {
+        font-weight: 900;
+      }
+
+      &-edit {
+        width: 30px;
+        margin-top: 20px;
+        position: absolute;
+        bottom: -45px;
+        left: 184px;
+      }
     }
   }
 
@@ -101,6 +115,26 @@ export default {
     background-color: #04f615;
     border-radius: 3px;
     text-align: center;
+  }
+
+  @media screen and (min-width: 1000px) {
+    height: 100vh;
+
+    &__item {
+      flex-direction: row;
+      align-items: center;
+      max-width: 800px;
+      padding: 0;
+      
+      &-image {
+        width: 50%;
+      }
+
+      .passion__details {
+        margin: 0 10px;
+      }
+    }
+
   }
 }
 </style>

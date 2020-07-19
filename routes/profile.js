@@ -203,8 +203,8 @@ router.delete('/language/:id', async(req, res) => {
 // -----------------------------------------------------------------------------
 
 // @desc   Get last board
-// @route  GET api/profile/task/:id
-router.get('/task/:id', async(req, res) => {
+// @route  GET api/profile/:profileId/lastboard
+router.get('/:id/lastboard', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.id)
     const lastTasks = profile.tasks.length - 1
@@ -229,7 +229,8 @@ router.get('/task/all/:id', async(req, res) => {
 // @route  POST api/profile/task/
 router.post('/task', async(req, res) => {
   try {
-    const profile = await Profile.findOne({ _id: req.body.id })
+    console.log(req.body.profileId);
+    const profile = await Profile.findOne({ _id: req.body.profileId })
 
     const lastTasks = profile.tasks.length - 1
     if(profile.tasks[lastTasks].createdAt.getDate() !== new Date().getDate()) {
@@ -238,15 +239,15 @@ router.post('/task', async(req, res) => {
     }
 
     await profile.save()
-    res.json(profile.tasks)
+    res.json(profile.tasks[lastTasks])
 
   } catch (err) {
     console.log(err)
   }
 })
 // @desc   Create single task
-// @route  PUT api/profile/task/single/:tasksIdProfile
-router.post('/task/single/:id', async(req, res) => {
+// @route  PUT api/profile/:id/task
+router.post('/:id/task', async(req, res) => {
   try {
 
     const newTask = {
@@ -258,30 +259,30 @@ router.post('/task/single/:id', async(req, res) => {
 
     let profile = await Profile.findOne({ _id: req.params.id })
 
-    const index = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
-
-    profile.tasks[index].task.push(newTask)
+    const lastIndex = profile.tasks.length - 1
+    profile.tasks[lastIndex].task.push(newTask)
 
     await profile.save()
 
-    res.json(profile.tasks) 
+    res.json(profile.tasks[lastIndex]) 
   } catch (err) {
     console.log(err)
   }
 })
 
 // @desc   Update user task
-// @route  PUT api/profile/task/single/:profileId
-router.put('/task/single/:id', async(req, res) => {
+// @route  PUT api/profile/:profileId/task/single/:
+router.put('/:id/task/:taskId', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
 
-    const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
-
-    const task = profile.tasks[boardIndex].task.filter(v => `${v._id}` === req.body.taskId)[0]
+    // const boardIndex = profile.tasks.map(v => v._id).indexOf(req.param.tasksId)
+    const last = profile.tasks.length - 1
+    const task = profile.tasks[last].task.filter(v => `${v._id}` === req.params.taskId)[0]
     
     // check changes with type and status
     const lastElem = profile.rating.length - 1
+    console.log(lastElem);
     profile.rating[lastElem || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
     
     if(req.body.name) { task.name = req.body.name}

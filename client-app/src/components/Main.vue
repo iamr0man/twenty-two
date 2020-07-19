@@ -109,6 +109,9 @@
         </div>
       </div>
     </div>
+    <div class="main__layout"></div>
+    <div class="main__circle main__circle-top"></div>
+    <div class="main__circle main__circle-bottom"></div>
   </main>
 </template>
 
@@ -172,7 +175,7 @@ export default {
         font-weight: 900;
 
         .router-link {
-          color: #fff;
+          color: #1b1b1b;;
           text-decoration: none;
         }
       }
@@ -180,6 +183,33 @@ export default {
       .item__additional {
         font-family: "Montserrat Subrayada", sans-serif;
       }
+    }
+  }
+
+  &__layout {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #b6b6d3;
+    z-index: -2;
+  }
+  &__circle {
+    position: absolute;
+    top: -290px;
+    left: -300px;
+    width: 1000px;
+    height: 1000px;
+    border-radius: 50%;
+    z-index: -1;
+
+    &-top {
+      background-color: #c7eff9;
+    }
+    &-bottom {
+      background-color: #e3cdda;
+      top: 275px;
+      left: 1585px;
     }
   }
 

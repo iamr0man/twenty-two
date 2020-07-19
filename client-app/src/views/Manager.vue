@@ -1,84 +1,45 @@
 <template>
   <div class="manager">
     <v-card-title class="manager__header header"
-      ><h3>Main Tasks</h3></v-card-title
-    >
-    <task v-for="(v, i) in 3" :task="tasks[i]" :key="i" />
+      ><h3>Main Tasks</h3></v-card-title>
+    <task v-for="(v, i) in mainTasks" :task="v" :key="i" />
     <v-card-title class="manager__subheader header"
-      ><h3>Secondary Tasks</h3></v-card-title
-    >
-    <task v-for="(v, i) in 8" :task="tasks[i + 3]" :key="i + 3" />
-    <v-card-actions v-if="tasks.length < 12" class="mt-2">
-      <v-btn color="#2196f382" class="manager__add-button">Add</v-btn>
-    </v-card-actions>
+      ><h3>Secondary Tasks</h3></v-card-title>
+    <task v-for="(v, i) in secondaryTasks" :task="v" :key="i + 3" />
+    <div class="manager__add-section">
+      <v-text-field
+        class="add-section__field"
+        v-model="newTask"
+        label="I want to..."
+        solo
+      />
+      <button class="add-section__button">Add</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Task from "../components/Task";
 export default {
   components: {
     Task
   },
+  async mounted() {
+    await this.$store.dispatch('task/createBoard', {
+      profileId: this.current
+    })
+    await this.$store.dispatch('task/getTaskCards', {
+      profileId: this.current
+    })
+  },
+  computed: {
+    ...mapGetters('profile', ['current']),
+    ...mapGetters('task', ['mainTasks', 'secondaryTasks']),
+  },
   data() {
     return {
-      tasks: [
-        {
-          name: "Work Hard",
-          status: "completed",
-          labels: [{ name: "priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Do exercises",
-          status: "completed",
-          labels: [{ name: "low priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Write Project",
-          status: "not finished",
-          labels: [{ name: "high priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Sleep",
-          status: "completed",
-          labels: [{ name: "priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Clean Room",
-          status: "completed",
-          labels: [{ name: "low priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Read book",
-          status: "not finished",
-          labels: [{ name: "high priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Listen audio",
-          status: "completed",
-          labels: [{ name: "low priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Help Sasha",
-          status: "completed",
-          labels: [{ name: "priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Call lead",
-          status: "completed",
-          labels: [{ name: "low priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Write Notes",
-          status: "not finished",
-          labels: [{ name: "priority", color: "#fdad1d" }]
-        },
-        {
-          name: "Analyze day",
-          status: "completed",
-          labels: [{ name: "in progress", color: "#fdad1d" }]
-        }
-      ]
+      newTask: '',
     };
   }
 };
@@ -86,26 +47,52 @@ export default {
 
 <style lang="scss">
 .manager {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100vh;
   background-color: #fff;
+  margin: 0px 25px;
+
 
   .header {
     background-color: violet;
     border-radius: 10px;
     box-shadow: 0px 4px 20px 3px #2196f382;
     margin-top: 7px;
+
+    h3 {
+      color: #fff;
+    }
   }
 
-  &__add-button {
-    width: 40%;
-    height: 8%;
-    margin: 10px auto;
-    background-color: #04f615;
-    border-radius: 3px;
-    text-align: center;
+  &__add-section {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    padding: 3px;
+    background: #2196f382;
+
+    .add-section__field {
+      border-radius: 20px;
+
+      .v-input__slot {
+        width: 98%;
+      }
+    }
+
+    .add-section__button {
+      width: 20%;
+      height: 45px;
+      margin: 10px auto;
+      background-color: violet;
+      color: #fff;
+      border-radius: 30px;
+      text-align: center;
+    }
   }
 }
 </style>

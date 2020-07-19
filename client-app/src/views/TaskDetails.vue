@@ -30,10 +30,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 export default {
+  mounted() {
+    this.$store.dispatch('task/getTaskCard', {
+      profileId: this.$route.params.profileId,
+      taskId: this.$route.params.taskId
+    })
+  },
   computed: {
-    ...mapState(["currentTask"])
+    ...mapGetters('task', ['currentTask'])
   }
 };
 </script>

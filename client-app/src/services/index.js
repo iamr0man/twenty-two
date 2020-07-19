@@ -1,3 +1,4 @@
+import TaskApi from "./api/task";
 import PassionApi from "./api/passion";
 
-export { PassionApi };
+export { TaskApi, PassionApi };
