@@ -161,7 +161,7 @@ export default {
 
   @media screen and (min-width: 1000px) {
     align-items: center;
-    &__item { 
+    &__item {
       min-width: 600px;
     }
   }

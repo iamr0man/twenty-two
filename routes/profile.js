@@ -18,8 +18,8 @@ router.post('/', async(req, res) => {
       type: 'secondary'
     }
 
-    profile.tasks.push({})
-    profile.tasks[0].task.push(newTask)
+    profile.manager.push({})
+    profile.manager[0].tasks.push(newTask)
 
     profile.rating.push({})
 
@@ -207,10 +207,25 @@ router.delete('/language/:id', async(req, res) => {
 router.get('/:id/lastboard', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.id)
-    const lastTasks = profile.tasks.length - 1
-    res.status(200).json(profile.tasks[lastTasks])
+    const lastTasks = profile.manager.length - 1
+    res.status(200).json(profile.manager[lastTasks])
   } catch (err) {
     console.log(err)
+  }
+})
+
+// @desc   Get last board
+// @route  GET api/profile/:profileId/task/:taskId
+router.get('/:id/task/:taskId', async(req, res) => {
+  try {
+    const profile = await Profile.findById(req.params.id)
+    const lastBoard = profile.manager.length - 1
+    const elem = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
+    console.log(profile.manager[lastBoard].tasks);
+    console.log(req.params.taskId);
+    res.status(200).json(elem)
+  } catch (err) {
+    console.log(err);
   }
 })
 
@@ -219,7 +234,7 @@ router.get('/:id/lastboard', async(req, res) => {
 router.get('/task/all/:id', async(req, res) => {
   try {
     let profile = await Profile.findOne({ _id: req.params.id })
-    res.status(200).json(profile.tasks) 
+    res.status(200).json(profile.manager) 
   } catch (err) {
     console.log(err)
   }
@@ -232,14 +247,14 @@ router.post('/task', async(req, res) => {
     console.log(req.body.profileId);
     const profile = await Profile.findOne({ _id: req.body.profileId })
 
-    const lastTasks = profile.tasks.length - 1
-    if(profile.tasks[lastTasks].createdAt.getDate() !== new Date().getDate()) {
-      profile.tasks.push({})
+    const lastTasks = profile.manager.length - 1
+    if(profile.manager[lastTasks].createdAt.getDate() !== new Date().getDate()) {
+      profile.manager.push({})
       profile.rating.push({})
     }
 
     await profile.save()
-    res.json(profile.tasks[lastTasks])
+    res.json(profile.manager[lastTasks])
 
   } catch (err) {
     console.log(err)
@@ -254,17 +269,19 @@ router.post('/:id/task', async(req, res) => {
       name: req.body.name,
       color: req.body.color,
       relationships: req.body.relationships,
+      subtasks: req.body.subtasks,
       type: req.body.type
     }
 
     let profile = await Profile.findOne({ _id: req.params.id })
 
-    const lastIndex = profile.tasks.length - 1
-    profile.tasks[lastIndex].task.push(newTask)
+    const lastIndex = profile.manager.length - 1
+    console.log(profile.manager[lastIndex].tasks);
+    profile.manager[lastIndex].tasks.push(newTask)
 
     await profile.save()
 
-    res.json(profile.tasks[lastIndex]) 
+    res.json(profile.manager[lastIndex]) 
   } catch (err) {
     console.log(err)
   }
@@ -276,24 +293,24 @@ router.put('/:id/task/:taskId', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
 
-    // const boardIndex = profile.tasks.map(v => v._id).indexOf(req.param.tasksId)
-    const last = profile.tasks.length - 1
-    const task = profile.tasks[last].task.filter(v => `${v._id}` === req.params.taskId)[0]
+    // const boardIndex = profile.manager.map(v => v._id).indexOf(req.param.managerId)
+    const lastBoard = profile.manager.length - 1
+    const task = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
     
     // check changes with type and status
-    const lastElem = profile.rating.length - 1
-    console.log(lastElem);
-    profile.rating[lastElem || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
+    const lastRating = profile.rating.length - 1
+    profile.rating[lastRating || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
     
     if(req.body.name) { task.name = req.body.name}
     if(req.body.color) { task.color = req.body.color}
     if(req.body.relationships) { task.relationships = req.body.relationships}
+    if(req.body.subtasks) { task.subtasks = req.body.subtasks }
     if(req.body.type) { task.type = req.body.type }
     if(req.body.status) { task.status = req.body.status }
 
     await profile.save()
     
-    res.status(200).json(profile)
+    res.status(200).json(profile.manager[lastBoard])
   } catch (err) {
     console.log(err)
   }
@@ -305,15 +322,15 @@ router.delete('/task/single/:id', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
 
-    const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
+    const boardIndex = profile.manager.map(v => v._id).indexOf(req.body.managerId)
     
-    const taskIndex = profile.tasks[boardIndex].task.map(v => v._id).indexOf(req.body.taskId)
+    const taskIndex = profile.manager[boardIndex].tasks.map(v => v._id).indexOf(req.body.taskId)
 
-    profile.tasks[boardIndex].task.splice(taskIndex, 1)
+    profile.manager[boardIndex].tasks.splice(taskIndex, 1)
     
     await profile.save()
     
-    res.status(200).json(profile.tasks[boardIndex])
+    res.status(200).json(profile.manager[boardIndex])
   } catch (err) {
     console.log(err)
   }
@@ -398,8 +415,8 @@ router.delete('/language/:id', async(req, res) => {
 // router.get('/task/:id', async(req, res) => {
 //   try {
 //     let profile = await Profile.findById(req.params.id)
-//     const lastTasks = profile.tasks.length - 1
-//     res.status(200).json(profile.tasks[lastTasks])
+//     const lastTasks = profile.manager.length - 1
+//     res.status(200).json(profile.manager[lastTasks])
 //   } catch (err) {
 //     console.log(err)
 //   }
@@ -466,15 +483,15 @@ router.delete('/task/single/:id', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
 
-    const boardIndex = profile.tasks.map(v => v._id).indexOf(req.body.tasksId)
+    const boardIndex = profile.manager.map(v => v._id).indexOf(req.body.managerId)
     
-    const taskIndex = profile.tasks[boardIndex].task.map(v => v._id).indexOf(req.body.taskId)
+    const taskIndex = profile.manager[boardIndex].tasks.map(v => v._id).indexOf(req.body.taskId)
 
-    profile.tasks[boardIndex].task.splice(taskIndex, 1)
+    profile.manager[boardIndex].tasks.splice(taskIndex, 1)
     
     await profile.save()
     
-    res.status(200).json(profile.tasks[boardIndex])
+    res.status(200).json(profile.manager[boardIndex])
   } catch (err) {
     console.log(err)
   }

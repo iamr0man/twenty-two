@@ -175,7 +175,7 @@ export default {
         font-weight: 900;
 
         .router-link {
-          color: #1b1b1b;;
+          color: #1b1b1b;
           text-decoration: none;
         }
       }

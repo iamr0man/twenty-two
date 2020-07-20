@@ -10,9 +10,15 @@
         alt="passion image"
       />
       <div class="passion__details">
-        <p class="passion__details-level"><span>Level=?:</span> {{ currentPassion.level }}</p>
-        <p class="passion__details-resource"><span>Resource=?:</span> {{ currentPassion.resource }}</p>
-        <p class="passion__details-description"><span>Description=?:</span> {{ currentPassion.description }}</p>
+        <p class="passion__details-level">
+          <span>Level=?:</span> {{ currentPassion.level }}
+        </p>
+        <p class="passion__details-resource">
+          <span>Resource=?:</span> {{ currentPassion.resource }}
+        </p>
+        <p class="passion__details-description">
+          <span>Description=?:</span> {{ currentPassion.description }}
+        </p>
         <img
           class="passion__details-edit"
           @click="jumpToDetails"
@@ -93,7 +99,7 @@ export default {
       border-radius: 50px;
       background: #fa7143;
       box-shadow: inset 5px 5px 8px #cfbcbc, inset -5px -5px 12px #fffefe;
-      
+
       p span {
         font-weight: 900;
       }
@@ -125,7 +131,7 @@ export default {
       align-items: center;
       max-width: 800px;
       padding: 0;
-      
+
       &-image {
         width: 50%;
       }
@@ -134,7 +140,6 @@ export default {
         margin: 0 10px;
       }
     }
-
   }
 }
 </style>

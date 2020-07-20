@@ -1,10 +1,12 @@
 <template>
   <div class="manager">
     <v-card-title class="manager__header header"
-      ><h3>Main Tasks</h3></v-card-title>
+      ><h3>Main Tasks</h3></v-card-title
+    >
     <task v-for="(v, i) in mainTasks" :task="v" :key="i" />
     <v-card-title class="manager__subheader header"
-      ><h3>Secondary Tasks</h3></v-card-title>
+      ><h3>Secondary Tasks</h3></v-card-title
+    >
     <task v-for="(v, i) in secondaryTasks" :task="v" :key="i + 3" />
     <div class="manager__add-section">
       <v-text-field
@@ -19,27 +21,27 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 import Task from "../components/Task";
 export default {
   components: {
     Task
   },
   async mounted() {
-    await this.$store.dispatch('task/createBoard', {
+    await this.$store.dispatch("task/createBoard", {
       profileId: this.current
-    })
-    await this.$store.dispatch('task/getTaskCards', {
+    });
+    await this.$store.dispatch("task/getTaskCards", {
       profileId: this.current
-    })
+    });
   },
   computed: {
-    ...mapGetters('profile', ['current']),
-    ...mapGetters('task', ['mainTasks', 'secondaryTasks']),
+    ...mapGetters("profile", ["current"]),
+    ...mapGetters("task", ["mainTasks", "secondaryTasks"])
   },
   data() {
     return {
-      newTask: '',
+      newTask: ""
     };
   }
 };
@@ -54,7 +56,6 @@ export default {
   height: 100vh;
   background-color: #fff;
   margin: 0px 25px;
-
 
   .header {
     background-color: violet;

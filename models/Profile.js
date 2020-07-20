@@ -17,12 +17,11 @@ const ProfileScmema = mongoose.Schema({
       }
     }
   ],
-  tasks: [
+  manager: [
     {
-      task: [
+      tasks: [
         {
           name: String,
-          color: String,
           relationships: [
             {
               kind: {
@@ -36,6 +35,20 @@ const ProfileScmema = mongoose.Schema({
               }
             },
           ],
+          label: {
+            name: String,
+            color: String,
+          },
+          subtasks: [
+            {
+              name: String,
+              status: {
+                type: String,
+                enum: ['completed', 'not finished'],
+                default: 'not finished'
+              }
+            }
+          ],
           type: {
             type: String,
             enum: ['main', 'secondary']
@@ -44,6 +57,10 @@ const ProfileScmema = mongoose.Schema({
             type: String,
             enum: ['completed', 'not finished'],
             default: 'not finished'
+          },
+          notes: {
+           type: String,
+           default: '' 
           }
         }
       ],

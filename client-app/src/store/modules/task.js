@@ -4,13 +4,13 @@ export default {
   namespaced: true,
   state: {
     currentTask: {},
-    tasks: {
-      task: []
+    manager: {
+      tasks: []
     }
   },
   mutations: {
     SET_TASKS(state, payload) {
-      state.tasks = payload;
+      state.manager = payload;
     },
     SET_TASK(state, payload) {
       state.currentTask = payload;
@@ -23,18 +23,14 @@ export default {
         commit("SET_TASKS", data);
       }
     },
-    async getTaskCard({ commit }, { profileId, noteId }) {
-      const { data } = await TaskApi.getTaskCard(profileId, noteId);
+    async getTaskCard({ commit }, { profileId, taskId }) {
+      const { data } = await TaskApi.getTaskCard(profileId, taskId);
       if (data) {
         commit("SET_TASK", data);
       }
     },
     async updateTaskCard({ commit }, { profileId, noteId, newTask }) {
-      const { data } = await TaskApi.updateTaskCard(
-        profileId,
-        noteId,
-        newTask
-      );
+      const { data } = await TaskApi.updateTaskCard(profileId, noteId, newTask);
       if (data) {
         commit("SET_TASK", data);
       }
@@ -50,12 +46,14 @@ export default {
       if (data) {
         commit("SET_TASKS", data);
       }
-    },
+    }
   },
   getters: {
-    tasks: state => state.tasks,
-    mainTasks: state => state.tasks.task.filter(v => v.type === 'main'),
-    secondaryTasks: state => state.tasks.task.filter(v => v.type === 'secondary'),
-    currentTask: state => state.currentTask
+    manager: state => state.manager,
+    mainTasks: state => state.manager.tasks.filter(v => v.type === "main"),
+    secondaryTasks: state =>
+      state.manager.tasks.filter(v => v.type === "secondary"),
+    currentTask: state => state.currentTask,
+    subtasks: state => state.currentTask.subtasks
   }
 };

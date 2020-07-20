@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 import router from "../router/";
 export default {
   props: ["task"],
@@ -21,11 +21,12 @@ export default {
         : require("../assets/images/checkmark.svg");
     },
     refreshStatus: function(task) {
-      this.$store.dispatch('task/updateTaskCard', {
+      debugger
+      this.$store.dispatch("task/updateTaskCard", {
         profileId: this.current,
         noteId: this.noteId,
-        newTask: { status: task.status === 'main' ? 'secondary' : 'main' }
-      })
+        newTask: { status: task.status === "main" ? "secondary" : "main" }
+      });
     },
     showDetails: function(task) {
       // do mutation for single task
@@ -33,10 +34,10 @@ export default {
         name: "TaskDetails",
         params: { managerId: this.current, taskId: task._id }
       });
-    },
+    }
   },
   computed: {
-    ...mapGetters('profile', ['current'])
+    ...mapGetters("profile", ["current"])
   }
 };
 </script>
