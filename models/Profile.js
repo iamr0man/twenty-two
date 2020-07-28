@@ -35,10 +35,12 @@ const ProfileScmema = mongoose.Schema({
               }
             },
           ],
-          label: {
-            name: String,
-            color: String,
-          },
+          labels: [
+            {
+              name: String,
+              color: String,
+            }
+          ],
           subtasks: [
             {
               name: String,

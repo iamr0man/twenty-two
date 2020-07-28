@@ -221,8 +221,6 @@ router.get('/:id/task/:taskId', async(req, res) => {
     const profile = await Profile.findById(req.params.id)
     const lastBoard = profile.manager.length - 1
     const elem = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
-    console.log(profile.manager[lastBoard].tasks);
-    console.log(req.params.taskId);
     res.status(200).json(elem)
   } catch (err) {
     console.log(err);
@@ -268,6 +266,7 @@ router.post('/:id/task', async(req, res) => {
     const newTask = {
       name: req.body.name,
       color: req.body.color,
+      labels: req.body.labels,
       relationships: req.body.relationships,
       subtasks: req.body.subtasks,
       type: req.body.type
@@ -288,7 +287,7 @@ router.post('/:id/task', async(req, res) => {
 })
 
 // @desc   Update user task
-// @route  PUT api/profile/:profileId/task/single/:
+// @route  PUT api/profile/:profileId/task/:taskId
 router.put('/:id/task/:taskId', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
@@ -298,39 +297,47 @@ router.put('/:id/task/:taskId', async(req, res) => {
     const task = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
     
     // check changes with type and status
-    const lastRating = profile.rating.length - 1
-    profile.rating[lastRating || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
-    
+    console.log(req.body);
+    if(!req.body.isSubtasks) {
+      const lastRating = profile.rating.length - 1
+      profile.rating[lastRating || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
+    }
     if(req.body.name) { task.name = req.body.name}
-    if(req.body.color) { task.color = req.body.color}
+    if(req.body.labels) { task.labels = req.body.labels}
     if(req.body.relationships) { task.relationships = req.body.relationships}
     if(req.body.subtasks) { task.subtasks = req.body.subtasks }
     if(req.body.type) { task.type = req.body.type }
     if(req.body.status) { task.status = req.body.status }
+    if(req.body.notes) { task.notes = req.body.notes }
 
     await profile.save()
     
-    res.status(200).json(profile.manager[lastBoard])
+    if(!req.body.isSubtasks) {
+      res.status(200).json(profile.manager[lastBoard])
+    } else {
+      res.status(200).json(task)
+    }
   } catch (err) {
     console.log(err)
   }
 })
 
 // @desc   Delete user passion note
-// @route  DELETE api/profile/task/:id
-router.delete('/task/single/:id', async(req, res) => {
+// @route  DELETE api/profile/:profileId/task/:taskId
+router.delete('/:id/task/:taskId', async(req, res) => {
   try {
     const profile = await Profile.findById(req.params.id)
 
-    const boardIndex = profile.manager.map(v => v._id).indexOf(req.body.managerId)
+    // const boardIndex = profile.manager.map(v => v._id).indexOf(req.body.managerId)
     
-    const taskIndex = profile.manager[boardIndex].tasks.map(v => v._id).indexOf(req.body.taskId)
+    const lastBoard = profile.manager.length - 1;
+    const taskIndex = profile.manager[lastBoard].tasks.map(v => v._id).indexOf(req.body.taskId)
 
-    profile.manager[boardIndex].tasks.splice(taskIndex, 1)
+    profile.manager[lastBoard].tasks.splice(taskIndex, 1)
     
     await profile.save()
     
-    res.status(200).json(profile.manager[boardIndex])
+    res.status(200).json(profile.manager[lastBoard])
   } catch (err) {
     console.log(err)
   }

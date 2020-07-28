@@ -1,6 +1,6 @@
 <template>
   <div class="task">
-    <button @click="refreshStatus">
+    <button @click="refreshStatus(task)">
       <img :src="statusSVG(task)" class="task__status" alt="not finished" />
     </button>
     <button @click="showDetails(task)">
@@ -13,20 +13,30 @@
 import { mapGetters } from "vuex";
 import router from "../router/";
 export default {
-  props: ["task"],
+  props: ["task", "parentTask"],
   methods: {
     statusSVG: function(task) {
       return task.status === "completed"
-        ? require("../assets/images/circle.svg")
-        : require("../assets/images/checkmark.svg");
+        ? require("../assets/images/checkmark.svg") 
+        : require("../assets/images/circle.svg");
     },
-    refreshStatus: function(task) {
-      debugger
-      this.$store.dispatch("task/updateTaskCard", {
+    refreshStatus: async function(task) {
+      const newTask = {}
+      if(!this.parentTask) {
+        newTask.status = task.status === "not finished" ? "completed" : "not finished"
+      } else {
+        const subtask = this.parentTask.subtasks.filter(v => `${v._id}` === `${task._id}`)[0]
+        subtask.status = subtask.status === "not finished" ? "completed" : "not finished"
+        newTask.isSubtasks = true
+        newTask.subtasks = this.parentTask.subtasks
+      }
+
+      await this.$store.dispatch("task/updateTaskCard", {
         profileId: this.current,
-        noteId: this.noteId,
-        newTask: { status: task.status === "main" ? "secondary" : "main" }
+        noteId: `${this.parentTask._id}`,
+        newTask
       });
+      // think about dynamic switch
     },
     showDetails: function(task) {
       // do mutation for single task

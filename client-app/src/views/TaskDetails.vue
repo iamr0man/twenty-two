@@ -12,13 +12,23 @@
           {{ v.name }}
         </div>
       </div>
-      <div class="main__additional-features">
-        <!-- <relationships />  -->
-        <!-- <pomidoro />  -->
-      </div>
+      <v-row class="main__additional-features">
+        <v-col class="features__wrapper" cols="6" sm="12">
+          <v-select
+            :items="relationships"
+            label="Relat."
+          ></v-select>
+        </v-col>
+        <v-col class="features__wrapper" cols="6" sm="12">
+          <v-select
+            :items="statuses"
+            label="Status"
+          ></v-select>
+        </v-col>
+      </v-row>
       <div class="main__subtasks main__section">
         <div class="subtasks__title main__header">Subtasks</div>
-        <task v-for="(v, i) in subtasks" :task="v" :key="i" />
+        <task v-for="(v, i) in subtasks" :task="v" :parentTask="currentTask" :key="i" />
         <button class="subtasks__button">+ New Subtask</button>
       </div>
       <div class="main__notes main__section">
@@ -37,6 +47,12 @@
 import { mapGetters } from "vuex";
 import Task from '../components/Task'
 export default {
+  data () {
+    return {
+      relationships: ['family', 'career', 'sleep', 'friends', 'fitness'],
+      statuses: ['main', 'secondary']
+    }
+  },
   components: {
     Task
   },
@@ -54,6 +70,7 @@ export default {
 
 <style lang="scss" scoped>
   .task-details {
+    height: 100vh;
     &__title {
       font-size: 33px;
       font-weight: 700;
@@ -72,6 +89,21 @@ export default {
           padding: 10px;
           border-radius: 24px;
           margin-right: 10px;
+        }
+      }
+
+      .main__additional-features {
+        .features__wrapper {
+          background-color:darkcyan;
+          border-right: 2px solid #fff;
+
+          .v-input {
+            width: 45%;
+          }
+
+          .input__slot:before {
+            width: 50%;
+          }
         }
       }
 
