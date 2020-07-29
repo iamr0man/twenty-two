@@ -10,12 +10,13 @@
     <task v-for="(v, i) in secondaryTasks" :task="v" :key="i + 3" />
     <div class="manager__add-section">
       <v-text-field
+        disabled
         class="add-section__field"
         v-model="newTask"
         label="I want to..."
         solo
       />
-      <button class="add-section__button">Add</button>
+      <router-link :to="{ name: 'NewTask', params: { managerId:current } }" class="add-section__button">Add</router-link>
     </div>
   </div>
 </template>

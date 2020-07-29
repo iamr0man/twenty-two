@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Manager from "../views/Manager.vue";
+import NewTask from "../views/NewTask.vue";
 import TaskDetails from "../views/TaskDetails.vue";
 import Passion from "../views/Passion.vue";
 import PassionDetails from "../views/PassionDetails.vue";
@@ -19,6 +20,11 @@ const routes = [
     path: "/manager",
     name: "Manager",
     component: Manager
+  },
+  {
+    path: "/manager/:managerId/newTask",
+    name: "NewTask",
+    component: NewTask
   },
   {
     path: "/manager/:managerId/task/:taskId",
@@ -40,11 +46,6 @@ const routes = [
     name: "PassionEdit",
     component: PassionEdit
   }
-  // {
-  //   path: "/manager/:managerId/task/:taskId",
-  //   name: "TaskDetails",
-  //   component: TaskDetails
-  // }
 ];
 
 const router = new VueRouter({

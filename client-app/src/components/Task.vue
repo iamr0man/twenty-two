@@ -17,23 +17,28 @@ export default {
   methods: {
     statusSVG: function(task) {
       return task.status === "completed"
-        ? require("../assets/images/checkmark.svg") 
+        ? require("../assets/images/checkmark.svg")
         : require("../assets/images/circle.svg");
     },
     refreshStatus: async function(task) {
-      const newTask = {}
-      if(!this.parentTask) {
-        newTask.status = task.status === "not finished" ? "completed" : "not finished"
+      let noteId = '';
+      const newTask = {};
+      if (!this.parentTask) {
+        noteId = `${task._id}`
+        newTask.status = task.status === "not finished" ? "completed" : "not finished";
       } else {
-        const subtask = this.parentTask.subtasks.filter(v => `${v._id}` === `${task._id}`)[0]
-        subtask.status = subtask.status === "not finished" ? "completed" : "not finished"
-        newTask.isSubtasks = true
-        newTask.subtasks = this.parentTask.subtasks
+        noteId = `${this.parentTask._id}`
+        const subtask = this.parentTask.subtasks.filter(
+          v => `${v._id}` === `${task._id}`
+        )[0];
+        subtask.status = subtask.status === "not finished" ? "completed" : "not finished";
+        newTask.isSubtasks = true;
+        newTask.subtasks = this.parentTask.subtasks;
       }
 
       await this.$store.dispatch("task/updateTaskCard", {
         profileId: this.current,
-        noteId: `${this.parentTask._id}`,
+        noteId,
         newTask
       });
       // think about dynamic switch
