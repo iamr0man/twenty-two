@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     currentTask: {},
+    relationships: [],
     manager: {
       tasks: []
     }
@@ -14,9 +15,26 @@ export default {
     },
     SET_TASK(state, payload) {
       state.currentTask = payload;
+    },
+    SET_RELATIONSHIPS(state, payload) {
+      state.relationships = payload
     }
   },
   actions: {
+    async getRelationships({ commit }, { profileId }) {
+      let { data } = await TaskApi.getRelationships(profileId)
+      if(data) {
+        const obj = {}
+        for (let i = 0; i < data.length; i++) {
+          if (obj[data[i].kind]) {
+            obj[data[i].kind] += data[i].amount
+          } else {
+            obj[data[i].kind] = data[i].amount
+          }
+        }
+        commit('SET_RELATIONSHIPS', obj)
+      }
+    },
     async getTaskCards({ commit }, { profileId }) {
       const { data } = await TaskApi.getTaskCards(profileId);
       if (data) {
@@ -46,9 +64,16 @@ export default {
       if (data) {
         commit("SET_TASKS", data);
       }
+    },
+    async deleteTaskCard({ commit }, { profileId, taskId }) {
+      const { data } = await TaskApi.deleteTaskCard(profileId, taskId);
+      if (data) {
+        commit("SET_TASK", {});
+      }
     }
   },
   getters: {
+    relationships: state => state.relationships,
     manager: state => state.manager,
     mainTasks: state => state.manager.tasks.filter(v => v.type === "main"),
     secondaryTasks: state =>

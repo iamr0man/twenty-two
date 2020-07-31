@@ -14,9 +14,7 @@ export default {
       body: formData,
       mode: "no-cors"
     });
-    debugger;
     const test = await res.json();
-    debugger;
     return test;
   },
   async updatePassionCard(profileId, noteId, newNote) {

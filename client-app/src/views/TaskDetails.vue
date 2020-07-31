@@ -28,14 +28,14 @@
         </v-col>
         <v-col class="features__wrapper" cols="6" sm="12">
           <v-select
-            v-model="status"
-            :items="statuses"
-            label="Status"
+            v-model="type"
+            :items="types"
+            label="Type"
           />
           <v-text-field 
-            v-if="status"
+            v-if="type"
             disabled
-            :value="status === 'main' ? 4 : 1"
+            :value="type === 'main' ? 4 : 1"
           />
         </v-col>
       </v-row>
@@ -55,8 +55,7 @@
       </div>
     </v-card-text>
     <v-card-actions class="task-details__footer">
-      <v-btn>Mark as Done</v-btn>
-      <v-btn>Delete Task</v-btn>
+      <v-btn @click="deleteTask">Delete Task</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -68,10 +67,10 @@ export default {
   data() {
     return {
       relationship: '',
-      status: '',
+      type: '',
       amountOfRelationship: '',
       relationships: ['family', 'career', 'sleep', 'friends', 'fitness'],
-      statuses: ['main', 'secondary']
+      types: ['main', 'secondary']
     };
   },
   components: {
@@ -82,9 +81,19 @@ export default {
       profileId: this.$route.params.managerId,
       taskId: this.$route.params.taskId
     });
+    this.relationship = this.currentTask.relationships[0].kind
+    this.amountOfRelationship = this.currentTask.relationships[0].amount
+    this.type = this.currentTask.type
   },
   computed: {
-    ...mapGetters("task", ["currentTask", "subtasks"])
+    ...mapGetters("profile", ["current"]),
+    ...mapGetters("task", ["currentTask", "subtasks"]),
+  },
+  methods: {
+    deleteTask: async function () {
+      await this.$store.dispatch('task/deleteTaskCard', { profileId: this.current, taskId: `${this.currentTask._id}` })
+      await this.$router.push({ path: "Manager" })
+    }
   }
 };
 </script>

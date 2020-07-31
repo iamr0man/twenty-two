@@ -41,7 +41,7 @@ export default {
         noteId,
         newTask
       });
-      // think about dynamic switch
+      if (!this.parentTask) document.location.reload()
     },
     showDetails: function(task) {
       // do mutation for single task

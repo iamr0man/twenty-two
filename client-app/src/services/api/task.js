@@ -18,5 +18,11 @@ export default {
   },
   async createBoard(profileId) {
     return await axiosInstance.post(`/profile/task`, { profileId });
+  },
+  async deleteTaskCard(profileId, taskId) {
+    return await axiosInstance.delete(`/profile/${profileId}/task/${taskId}`);
+  },
+  async getRelationships(profileId) {
+    return await axiosInstance.get(`/profile/${profileId}/relationships/all`)
   }
 };

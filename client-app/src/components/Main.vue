@@ -17,43 +17,43 @@
         </div>
         <div class="relationship__items">
           <div class="relationship__item">
-            <div class="item__name">testing</div>
+            <div class="item__name">family</div>
             <div class="item__details">
-              <div class="item__amount">100</div>
+              <div class="item__amount">{{ relationships.family || 0 }}</div>
               |
-              <div class="item__percentage">20%</div>
+              <div class="item__percentage">{{ sumOfRelationships / relationships.family }}</div>
             </div>
           </div>
           <div class="relationship__item">
-            <div class="item__name">testing</div>
+            <div class="item__name">career</div>
             <div class="item__details">
-              <div class="item__amount">100</div>
+              <div class="item__amount">{{ relationships.career || 0 }}</div>
               |
-              <div class="item__percentage">20%</div>
+              <div class="item__percentage">{{ sumOfRelationships / relationships.career }}</div>
             </div>
           </div>
           <div class="relationship__item">
-            <div class="item__name">testing</div>
+            <div class="item__name">sleep</div>
             <div class="item__details">
-              <div class="item__amount">100</div>
+              <div class="item__amount">{{ relationships.sleep || 0 }}</div>
               |
-              <div class="item__percentage">20%</div>
+              <div class="item__percentage">{{ sumOfRelationships / relationships.sleep }}</div>
             </div>
           </div>
           <div class="relationship__item">
-            <div class="item__name">testing</div>
+            <div class="item__name">friends</div>
             <div class="item__details">
-              <div class="item__amount">100</div>
+              <div class="item__amount">{{ relationships.friends || 0 }}</div>
               |
-              <div class="item__percentage">20%</div>
+              <div class="item__percentage">{{ sumOfRelationships / relationships.friends }}</div>
             </div>
           </div>
           <div class="relationship__item">
-            <div class="item__name">testing</div>
+            <div class="item__name">fitness</div>
             <div class="item__details">
-              <div class="item__amount">100</div>
+              <div class="item__amount">{{ relationships.fitness || 0 }}</div>
               |
-              <div class="item__percentage">20%</div>
+              <div class="item__percentage">{{ sumOfRelationships / relationships.fitness }}</div>
             </div>
           </div>
         </div>
@@ -116,6 +116,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -123,6 +124,18 @@ export default {
       labels: ["MON", "TUES", "WED", "THUR", "FRI", "SAT", "SUN"],
       gradient: ["#00c6ff", "#F0F", "#FF0"]
     };
+  },
+  computed: {
+    ...mapGetters('profile', ['current']),
+    ...mapGetters('task', ['relationships']),
+  },
+  methods: {
+    sumOfRelationships: function () {
+      return this.relationships.reduce((acc, curr) => acc + curr, 0)
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('task/getRelationships', { profileId: this.current })
   }
 };
 </script>

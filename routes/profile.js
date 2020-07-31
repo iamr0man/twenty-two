@@ -238,6 +238,18 @@ router.get('/task/all/:id', async(req, res) => {
   }
 })
 
+// @desc   Get all relationships
+// @route  GET api/profile/:id/task/all/
+router.get('/:id/relationships/all/', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    const relationships = profile.manager.flatMap(v => v.tasks.flatMap(v => v.relationships))
+    res.status(200).json(relationships) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 // @desc   Create single board
 // @route  POST api/profile/task/
 router.post('/task', async(req, res) => {
@@ -297,7 +309,6 @@ router.put('/:id/task/:taskId', async(req, res) => {
     const task = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
     
     // check changes with type and status
-    console.log(req.body);
     if(!req.body.isSubtasks) {
       const lastRating = profile.rating.length - 1
       profile.rating[lastRating || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
