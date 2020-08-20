@@ -7,7 +7,11 @@ import vuetify from "./plugins/vuetify";
 
 import "./assets/css/reset.css";
 
+import VueYoutube from 'vue-youtube'
+
 Vue.config.productionTip = false;
+
+Vue.use(VueYoutube)
 
 new Vue({
   router,

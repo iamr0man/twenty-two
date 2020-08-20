@@ -72,26 +72,26 @@
       </div>
     </div>
     <div class="main__navigation">
-      <div class="navigation__item">
-        <img src="../assets/images/task.png" alt="" class="item__logo" />
+      <router-link to="/manager" class="navigation__item">
+        <img src="../assets/images/task.svg" alt="" class="item__logo" />
         <div class="item__value">
-          <router-link class="router-link" to="/manager">manager</router-link>
+          <div class="router-link">manager</div>
         </div>
         <div class="item__additional">
           954
           <p>completed tasks</p>
         </div>
-      </div>
-      <div class="navigation__item">
+      </router-link>
+      <router-link to="/passion" class="navigation__item">
         <img src="../assets/images/passion.svg" alt="" class="item__logo" />
         <div class="item__value">
-          <router-link class="router-link" to="/passion">passion</router-link>
+          <div class="router-link" >passion</div>
         </div>
         <div class="item__additional">
           89
           <p>notes</p>
         </div>
-      </div>
+      </router-link>
       <div class="navigation__item">
         <img src="../assets/images/budget.svg" alt="" class="item__logo" />
         <div class="item__value">budget</div>
@@ -100,18 +100,18 @@
           <p>transactions</p>
         </div>
       </div>
-      <div class="navigation__item">
+      <router-link to="/language" class="navigation__item">
         <img src="../assets/images/global.svg" alt="" class="item__logo" />
         <div class="item__value">language</div>
         <div class="item__additional">
           501
           <p>words was added</p>
         </div>
-      </div>
+      </router-link>
     </div>
-    <div class="main__layout"></div>
-    <div class="main__circle main__circle-top"></div>
-    <div class="main__circle main__circle-bottom"></div>
+    <!-- <div class="main__layout"></div> -->
+    <!-- <div class="main__circle main__circle-top"></div>
+    <div class="main__circle main__circle-bottom"></div> -->
   </main>
 </template>
 
@@ -142,7 +142,7 @@ export default {
 
 <style lang="scss">
 .main {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   background: #ecf0f3;
   border-radius: 130px;
@@ -179,6 +179,8 @@ export default {
 
     .navigation__item {
       flex: 0 1 50%;
+      color: #1b1b1b;
+      text-decoration: none;
       .item__logo {
         width: 35px;
       }
@@ -187,10 +189,10 @@ export default {
         text-transform: uppercase;
         font-weight: 900;
 
-        .router-link {
-          color: #1b1b1b;
-          text-decoration: none;
-        }
+        // .router-link {
+        //   color: #1b1b1b;
+        //   text-decoration: none;
+        // }
       }
 
       .item__additional {

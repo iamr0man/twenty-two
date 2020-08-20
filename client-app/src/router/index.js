@@ -7,6 +7,8 @@ import TaskDetails from "../views/TaskDetails.vue";
 import Passion from "../views/Passion.vue";
 import PassionDetails from "../views/PassionDetails.vue";
 import PassionEdit from "../views/PassionEdit.vue";
+import Language from "../views/Language.vue";
+import LanguageDetails from "../views/LanguageDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -45,7 +47,17 @@ const routes = [
     path: "/passion/:profileId/note/:noteId/edit",
     name: "PassionEdit",
     component: PassionEdit
-  }
+  },
+  {
+    path: "/Language",
+    name: "Language",
+    component: Language
+  },
+  {
+    path: "/language/:profileId/language/:noteId",
+    name: "LanguageDetails",
+    component: LanguageDetails
+  },
 ];
 
 const router = new VueRouter({
