@@ -4,6 +4,9 @@ export default {
   namespaced: true,
   state: {
     currentTask: {},
+    rating: [],
+    weekRating: [],
+    weekCards: [],
     relationships: [],
     manager: {
       tasks: []
@@ -16,11 +19,38 @@ export default {
     SET_TASK(state, payload) {
       state.currentTask = payload;
     },
+    SET_WEEK_CARDS(state, payload) {
+      state.weekCards = payload;
+    },
+    SET_WEEK_RATING(state, payload) {
+      state.weekRating = payload;
+    },
+    SET_RATING(state, payload) {
+      state.rating = payload;
+    },
     SET_RELATIONSHIPS(state, payload) {
       state.relationships = payload
     }
   },
   actions: {
+    async getWeekCards({ commit }, { profileId }) {
+      const { data } = await TaskApi.getWeekCards(profileId)
+      if(data) {
+        commit('SET_WEEK_CARDS', data)
+      }
+    },
+    async getWeekRating({ commit }, { profileId }) {
+      const { data } = await TaskApi.getWeekRating(profileId)
+      if(data) {
+        commit('SET_WEEK_RATING', data)
+      }
+    },
+    async getRating({ commit }, { profileId }) {
+      const { data } = await TaskApi.getRating(profileId)
+      if(data) {
+        commit('SET_RATING', data)
+      }
+    },
     async getRelationships({ commit }, { profileId }) {
       let { data } = await TaskApi.getRelationships(profileId)
       if(data) {
@@ -73,6 +103,9 @@ export default {
     }
   },
   getters: {
+    sumOfRelationships: state => Object.values(state.relationships).reduce((acc, curr) => acc + curr, 0),
+    rating: state => state.rating.reduce((acc, curr) => acc+curr.amount,0),
+    weekRating: state => state.weekRating,
     relationships: state => state.relationships,
     manager: state => state.manager,
     mainTasks: state => state.manager.tasks.filter(v => v.type === "main"),

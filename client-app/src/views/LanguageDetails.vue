@@ -10,7 +10,7 @@
         alt="language image"
       />
       <div class="language__details">
-        <youtube :video-id="videoCode(currentLanguage.videoLink)"></youtube>
+        <youtube ref="youtube" :video-id="videoCode(currentLanguage.videoLink)"></youtube>
         <p class="language__details-description">
           <span>Words=?:</span> {{ currentLanguage.words.join(' ') }}
         </p>
@@ -40,7 +40,11 @@ export default {
     });
   },
   computed: {
-    ...mapGetters("language", ["currentLanguage"])
+    ...mapGetters("language", ["currentLanguage"]),
+    player() {
+      return this.$refs.youtube.player
+    }
+
   },
   methods: {
     videoCode: function(v) {
@@ -122,6 +126,10 @@ export default {
     background-color: #04f615;
     border-radius: 3px;
     text-align: center;
+  }
+
+  iframe {
+    width: 100%;
   }
 
   @media screen and (min-width: 1000px) {

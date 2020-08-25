@@ -2,12 +2,12 @@
   <main class="main">
     <div class="main__welcome">
       Welcome,
-      <p>Monica</p>
+      <p>Roman</p>
     </div>
     <div class="main__infographic">
       <div class="main__relationship">
         <div class="relationship__layout"></div>
-        <div class="relashionship__label">Current situation</div>
+        <div class="relashionship__label">Inside</div>
         <div class="relationship__line">
           <div class="line__item red"></div>
           <div class="line__item violet"></div>
@@ -21,7 +21,7 @@
             <div class="item__details">
               <div class="item__amount">{{ relationships.family || 0 }}</div>
               |
-              <div class="item__percentage">{{ sumOfRelationships / relationships.family }}</div>
+              <div class="item__percentage">{{ countPercentage(relationships.family) }}</div>
             </div>
           </div>
           <div class="relationship__item">
@@ -29,7 +29,7 @@
             <div class="item__details">
               <div class="item__amount">{{ relationships.career || 0 }}</div>
               |
-              <div class="item__percentage">{{ sumOfRelationships / relationships.career }}</div>
+              <div class="item__percentage">{{ countPercentage(relationships.career) }}</div>
             </div>
           </div>
           <div class="relationship__item">
@@ -37,7 +37,7 @@
             <div class="item__details">
               <div class="item__amount">{{ relationships.sleep || 0 }}</div>
               |
-              <div class="item__percentage">{{ sumOfRelationships / relationships.sleep }}</div>
+              <div class="item__percentage">{{ countPercentage(relationships.sleep) }}</div>
             </div>
           </div>
           <div class="relationship__item">
@@ -45,7 +45,7 @@
             <div class="item__details">
               <div class="item__amount">{{ relationships.friends || 0 }}</div>
               |
-              <div class="item__percentage">{{ sumOfRelationships / relationships.friends }}</div>
+              <div class="item__percentage">{{ countPercentage(relationships.friends) }}</div>
             </div>
           </div>
           <div class="relationship__item">
@@ -53,7 +53,7 @@
             <div class="item__details">
               <div class="item__amount">{{ relationships.fitness || 0 }}</div>
               |
-              <div class="item__percentage">{{ sumOfRelationships / relationships.fitness }}</div>
+              <div class="item__percentage">{{ countPercentage(relationships.fitness) }}</div>
             </div>
           </div>
         </div>
@@ -120,22 +120,40 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      value: [0, 5, 7, 1, -2, 4, 10],
-      labels: ["MON", "TUES", "WED", "THUR", "FRI", "SAT", "SUN"],
+      value: [],
+      labels: ["SUN", "MON", "TUES", "WED", "THUR", "FRI", "SAT"],
       gradient: ["#00c6ff", "#F0F", "#FF0"]
     };
   },
+  methods: {
+    countPercentage: function(v) {
+      return Math.floor((v / this.sumOfRelationships) * 100) + '%'
+    },
+    drawDaysAndRating: function() {
+      const currentDate = new Date()
+      const dayNumber = currentDate.getDay()
+      this.labels = this.labels.slice(0+dayNumber+1).concat(this.labels.slice(0,dayNumber+1))
+    
+      for(let i = 0; i < this.labels.length; i++) {
+        const ratingDate = new Date(this.weekRating[i].createdAt)
+        if(ratingDate.getMonth() === currentDate.getMonth() &&
+          ratingDate.getUTCDate() === currentDate.getUTCDate()) {
+          this.value.unshift(this.weekRating[i].amount)
+        } else {
+          this.value.unshift(0)
+        }
+      }
+    }
+  },
   computed: {
     ...mapGetters('profile', ['current']),
-    ...mapGetters('task', ['relationships']),
-  },
-  methods: {
-    sumOfRelationships: function () {
-      return this.relationships.reduce((acc, curr) => acc + curr, 0)
-    }
+    ...mapGetters('task', ['weekRating', 'relationships', 'sumOfRelationships']),
   },
   async mounted() {
     await this.$store.dispatch('task/getRelationships', { profileId: this.current })
+    await this.$store.dispatch('task/getWeekRating', { profileId: this.current })
+    
+    this.drawDaysAndRating()
   }
 };
 </script>

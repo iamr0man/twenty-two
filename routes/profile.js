@@ -167,12 +167,35 @@ router.get('/task/all/:id', async(req, res) => {
 })
 
 // @desc   Get all relationships
-// @route  GET api/profile/:id/task/all/
+// @route  GET api/profile/:id/relationships/all/
 router.get('/:id/relationships/all/', async(req, res) => {
   try {
     let profile = await Profile.findOne({ _id: req.params.id })
     const relationships = profile.manager.flatMap(v => v.tasks.flatMap(v => v.relationships))
     res.status(200).json(relationships) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get all rating
+// @route  GET api/profile/:id/rating/all/
+router.get('/:id/rating/all/', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    res.status(200).json(profile.rating) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get week rating
+// @route  GET api/profile/:id/rating/all/
+router.get('/:id/rating/week/', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    const rating = profile.rating.slice(0,7).reverse()
+    res.status(200).json(rating) 
   } catch (err) {
     console.log(err)
   }

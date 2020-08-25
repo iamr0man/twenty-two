@@ -1,6 +1,15 @@
 import axiosInstance from "../instance";
 
 export default {
+  async getWeekCards(profileId) {
+    return await axiosInstance.get('/profile/task/all/' + profileId)
+  },
+  async getRating(profileId) {
+    return await axiosInstance.get(`/profile/${profileId}/rating/all/`)
+  },
+  async getWeekRating(profileId) {
+    return await axiosInstance.get(`/profile/${profileId}/rating/week/`)
+  },
   async getTaskCards(profileId) {
     return await axiosInstance.get(`/profile/${profileId}/lastboard`);
   },
