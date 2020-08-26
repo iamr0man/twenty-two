@@ -7,6 +7,8 @@ import TaskDetails from "../views/TaskDetails.vue";
 import Passion from "../views/Passion.vue";
 import PassionDetails from "../views/PassionDetails.vue";
 import PassionEdit from "../views/PassionEdit.vue";
+import Budget from "../views/Budget.vue";
+import NewTransaction from "../views/NewTransaction.vue";
 import Language from "../views/Language.vue";
 import LanguageDetails from "../views/LanguageDetails.vue";
 
@@ -49,6 +51,15 @@ const routes = [
     component: PassionEdit
   },
   {
+    path: "/budget",
+    name: "Budget",
+    component: Budget
+  },
+  {
+    path: "/budget/:budgetId/newTransaction",
+    name: "NewTransaction",
+    component: NewTransaction
+  },
     path: "/Language",
     name: "Language",
     component: Language
