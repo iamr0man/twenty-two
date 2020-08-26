@@ -9,6 +9,8 @@ import PassionDetails from "../views/PassionDetails.vue";
 import PassionEdit from "../views/PassionEdit.vue";
 import Budget from "../views/Budget.vue";
 import NewTransaction from "../views/NewTransaction.vue";
+import Language from "../views/Language.vue";
+import LanguageDetails from "../views/LanguageDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -57,6 +59,15 @@ const routes = [
     path: "/budget/:budgetId/newTransaction",
     name: "NewTransaction",
     component: NewTransaction
+  },
+    path: "/Language",
+    name: "Language",
+    component: Language
+  },
+  {
+    path: "/language/:profileId/language/:noteId",
+    name: "LanguageDetails",
+    component: LanguageDetails
   },
 ];
 

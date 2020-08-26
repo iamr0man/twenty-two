@@ -6,11 +6,13 @@ Vue.use(Vuex);
 import profile from "./modules/profile";
 import task from "./modules/task";
 import passion from "./modules/passion";
+import language from "./modules/language";
 
 export default new Vuex.Store({
   modules: {
     profile,
     task,
-    passion
+    passion,
+    language
   }
 });

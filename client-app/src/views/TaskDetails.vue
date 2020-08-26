@@ -47,15 +47,19 @@
           :parentTask="currentTask"
           :key="i"
         />
-        <button class="subtasks__button">+ New Subtask</button>
+        <button class="subtasks__button" @click="addedSubTask">+ New Subtask</button>
       </div>
       <div class="main__notes main__section">
         <div class="notes__title main__header">Notes</div>
-        <div class="notes__value">{{ currentTask.notes }}</div>
+        <v-textarea
+          name="input-7-1"
+          v-model="notes"
+        ></v-textarea>
       </div>
     </v-card-text>
     <v-card-actions class="task-details__footer">
       <v-btn @click="deleteTask">Delete Task</v-btn>
+      <v-btn @click="updateTask">Update Task</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -66,11 +70,13 @@ import Task from "../components/Task";
 export default {
   data() {
     return {
+      relationships: ['family', 'career', 'sleep', 'friends', 'fitness'],
+      types: ['main', 'secondary'],
+      subtasks: [],
       relationship: '',
       type: '',
       amountOfRelationship: '',
-      relationships: ['family', 'career', 'sleep', 'friends', 'fitness'],
-      types: ['main', 'secondary']
+      notes: '',
     };
   },
   components: {
@@ -84,15 +90,37 @@ export default {
     this.relationship = this.currentTask.relationships[0].kind
     this.amountOfRelationship = this.currentTask.relationships[0].amount
     this.type = this.currentTask.type
+    this.subtasks = this.currentTask.subtasks
+    this.notes = this.currentTask.notes
   },
   computed: {
     ...mapGetters("profile", ["current"]),
-    ...mapGetters("task", ["currentTask", "subtasks"]),
+    ...mapGetters("task", ["currentTask"]),
   },
   methods: {
     deleteTask: async function () {
       await this.$store.dispatch('task/deleteTaskCard', { profileId: this.current, taskId: `${this.currentTask._id}` })
-      await this.$router.push({ path: "Manager" })
+      await this.$router.push({ name: "Manager" })
+    },
+    addedSubTask: function () {
+      this.subtasks.push({ name: this.subTaskName })
+      this.subTasksDialog = false
+    },
+    updateTask: async function () {
+      const newTask = {}
+      if (this.relationship) newTask.relationship = this.relationship
+      if (this.amountOfRelationship) newTask.amountOfRelationship = this.amountOfRelationship
+      if (this.type) newTask.type = this.type
+      if (this.subtasks) newTask.subtasks = this.subtasks
+      if (this.notes) newTask.notes = this.notes
+      newTask.status = this.currentTask.status
+
+      await this.$store.dispatch("task/updateTaskCard", {
+        profileId: this.current,
+        noteId: this.currentTask._id,
+        newTask
+      });
+      await this.$router.push({ name: "Manager" })
     }
   }
 };

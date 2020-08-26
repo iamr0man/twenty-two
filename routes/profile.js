@@ -54,8 +54,8 @@ router.get('/:profileId/note/all', async(req, res) => {
   }
 })
 
-// @desc   Get all passion notes
-// @route  GET api/profile/note/all/
+// @desc   Get current passion note
+// @route  GET api/profile/note/:noteId/
 router.get('/:profileId/note/:noteId', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.profileId)
@@ -128,78 +128,6 @@ router.delete('/note/:id', async(req, res) => {
   }
 })
 
-// -------------------------------------------------------------------
-
-// @desc   Get all language notes
-// @route  GET api/profile/language/all/
-router.get('/language/all/:id', async(req, res) => {
-  try {
-    let profile = await Profile.findById(req.params.id)
-    res.status(200).json(profile.language) 
-  } catch (err) {
-    console.log(err)
-  }
-})
-
-// @desc   Create user language notes
-// @route  POST api/profile/language
-router.post('/language', async(req, res) => {
-  try {
-
-    const newNote = {
-      videoLink: req.body.videoLink,
-      articleLink: req.body.articleLink,
-      words: req.body.words.split(', ')
-    }
-
-    let profile = await Profile.findById(req.body.id)
-    profile.language.unshift(newNote)
-
-    await profile.save()
-
-    res.json(profile) 
-  } catch (err) {
-    console.log(err)
-  }
-})
-
-// @desc   Update user language note
-// @route  PUT api/profile/language/:id
-router.put('/language/:id', async(req, res) => {
-  try {
-    const notes = await Profile.findById(req.params.id)
-
-    const note = notes.language.filter(i => `${i._id}` === req.body.value)[0]
-
-    if(req.body.videoLink) { note.videoLink = req.body.videoLink}
-    if(req.body.articleLink) { note.articleLink = req.body.articleLink}
-    if(req.body.words) { note.words = req.body.words.split(', ')}
-    
-    await notes.save()
-    
-    res.status(200).json(notes.language)
-  } catch (err) {
-    console.log(err)
-  }
-})
-
-// @desc   Delete user language note
-// @route  DELETE api/profile/language/:id
-router.delete('/language/:id', async(req, res) => {
-  try {
-    const notes = await Profile.findById(req.params.id)
-
-    const removeIndex = notes.language.map(i => i._id).indexOf(req.body.value)
-    notes.language.splice(removeIndex, 1)
-    
-    await notes.save()
-    
-    res.status(200).json(notes.language) // ask about undo action
-  } catch (err) {
-    console.log(err)
-  }
-})
-
 // -----------------------------------------------------------------------------
 
 // @desc   Get last board
@@ -239,12 +167,35 @@ router.get('/task/all/:id', async(req, res) => {
 })
 
 // @desc   Get all relationships
-// @route  GET api/profile/:id/task/all/
+// @route  GET api/profile/:id/relationships/all/
 router.get('/:id/relationships/all/', async(req, res) => {
   try {
     let profile = await Profile.findOne({ _id: req.params.id })
     const relationships = profile.manager.flatMap(v => v.tasks.flatMap(v => v.relationships))
     res.status(200).json(relationships) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get all rating
+// @route  GET api/profile/:id/rating/all/
+router.get('/:id/rating/all/', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    res.status(200).json(profile.rating) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get week rating
+// @route  GET api/profile/:id/rating/all/
+router.get('/:id/rating/week/', async(req, res) => {
+  try {
+    let profile = await Profile.findOne({ _id: req.params.id })
+    const rating = profile.rating.slice(0,7).reverse()
+    res.status(200).json(rating) 
   } catch (err) {
     console.log(err)
   }
@@ -309,6 +260,7 @@ router.put('/:id/task/:taskId', async(req, res) => {
     const task = profile.manager[lastBoard].tasks.filter(v => `${v._id}` === req.params.taskId)[0]
     
     // check changes with type and status
+    console.log(req.body);
     if(!req.body.isSubtasks) {
       const lastRating = profile.rating.length - 1
       profile.rating[lastRating || 0].amount += checkTaskStatus(task.type, task.status, req.body.type, req.body.status)
@@ -357,11 +309,23 @@ router.delete('/:id/task/:taskId', async(req, res) => {
 // ----------------------------------------------------------------------------------------------
 
 // @desc   Get all language notes
-// @route  GET api/profile/language/all/
-router.get('/language/all/:id', async(req, res) => {
+// @route  GET api/profile/:id/language/all/
+router.get('/:id/language/all/', async(req, res) => {
   try {
     let profile = await Profile.findById(req.params.id)
     res.status(200).json(profile.language) 
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+// @desc   Get language note
+// @route  GET api/profile/:id/language/:noteId/
+router.get('/:id/language/:noteId/', async(req, res) => {
+  try {
+    let profile = await Profile.findById(req.params.id)
+    const current = profile.language.filter(v => `${v._id}` === req.params.noteId)[0]
+    res.status(200).json(current) 
   } catch (err) {
     console.log(err)
   }
