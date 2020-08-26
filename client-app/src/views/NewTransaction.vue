@@ -8,20 +8,42 @@
         <div class="notes__title main__header">Name</div>
         <v-text-field
           class="notes__value"
-          v-model="notes"
+          v-model="name"
+        />
+      </div>
+      <v-radio-group
+        v-model="type">
+        <v-radio
+          class="mx-auto"
+          v-for="(v, i) in ['Expenses', 'Incomes']"
+          :key="i"
+          :label="v"
+        ></v-radio>
+      </v-radio-group>
+      <div class="main__notes main__section">
+        <div class="notes__title main__header">Category</div>
+        <v-select
+          class="notes__value"
+          :items="this.categories"
+          item-text="name"
+          v-model="category"
+          return-object
         />
       </div>
       <div class="main__notes main__section">
-        <div class="notes__title main__header">Category</div>
+        <div class="notes__title main__header">Momey</div>
         <v-text-field
           class="notes__value"
-          v-model="notes"
+          prepend-icon="mdi-currency-usd "
+          v-model="money"
         />
       </div>
       <div class="main__notes main__section">
         <div class="notes__title main__header">Notes</div>
         <v-textarea
           class="notes__value"
+          rows="2"
+          solo
           v-model="notes"
         />
       </div>
@@ -35,60 +57,36 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data() {
+  data() { 
     return {
       name: '',
-      valid: false,
-      labelDialog: false,
-      labelName: '',
-      labelColor: '',
-      labels: [],
+      type: 0,
+      category: '',
       kind: '',
-      type: '',
-      amountOfRelationship: '',
-      relationships: ['family', 'career', 'sleep', 'friends', 'fitness'],
-      types: ['main', 'secondary'],
-      subTasksDialog: false,
-      subtasks: [],
-      subTaskName: '',
+      money: '',
       notes: ''
     };
   },
   async mounted() {
-    await this.$store.dispatch("task/getTaskCard", {
-      profileId: this.$route.params.managerId,
-      taskId: this.$route.params.taskId
-    });
+    await this.$store.dispatch('budget/getCategories')
   },
   computed: {
-    ...mapGetters("profile", ["current"])
+    ...mapGetters("profile", ["current"]),
+    ...mapGetters("budget", ["expensesCategories", "incomeCategories", ]),
+    categories: function() {
+      return this.type ? this.incomeCategories : this.expensesCategories
+    }
   },
   methods: {
-    addedLabel: function () {
-      this.labels.push({ name: this.labelName, color: this.labelColor })
-      this.labelDialog = false
-      this.labelName = ''
-      this.labelColor = ''
-    },
-    addedSubTask: function () {
-      this.subtasks.push({ name: this.subTaskName })
-      this.subTasksDialog = false
-    },
     sendRequest: async function () {
-      const newNote = {
+      const newTransaction = {
         name: this.name,
-        labels: this.labels,
-        relationships: {
-          kind: this.kind,
-          amount: this.amountOfRelationship
-        },
-        subtasks: this.subtasks,
-        type: this.type,
-        status: 'not finished',
-        notes: this.notes
+        category: this.category._id,
+        money: this.money,
+        createdAt: new Date()
       }
-      await this.$store.dispatch('task/createTaskCard', { profileId: this.current, newNote })
-      this.$router.push({ path: 'Manager'})
+      await this.$store.dispatch('budget/createTransactionCard', { profileId: this.current, newTransaction })
+      this.$router.push({ name: 'Budget'})
     }
   }
 };

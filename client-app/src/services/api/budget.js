@@ -4,6 +4,9 @@ export default {
   async getTransactionCards(profileId) {
     return await axiosInstance.get(`/profile/${profileId}/budget/all/`);
   },
+  async getCategories() {
+    return await axiosInstance.get(`/category`);
+  },
   // async getPassionCard(profileId, noteId) {
   //   return await axiosInstance.get(`/profile/${profileId}/note/${noteId}`);
   // },
