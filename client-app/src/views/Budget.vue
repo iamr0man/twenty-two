@@ -5,15 +5,15 @@
         <h2 @click="isExpenses = true">Expenses</h2>
         <h2 @click="isExpenses = false">Incomes</h2>
       </div>
-      <div class="budget__transactions-item"  v-for="(v, i) in transactions" :key="i">
+      <div class="budget__transactions-item" :style="{ backgroundColor: v.category.color }"  v-for="(v, i) in transactions" :key="i">
         <div class="item-detail">
           {{ i }}
         </div>
         <div class="item-detail">
-          {{ v.category }}
+          {{ v.category.name }}
         </div>
         <div class="item-detail">
-          {{ v.amount }}
+          {{ v.money }}
         </div>
       </div>
     </div>
@@ -23,25 +23,26 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   data(){
     return {
-      isExpenses: true,
-      incomes: [{ category: 'Salary', amount: 270000 }],
-      expenses: [{ category: 'Travel', amount: 80000 }]
+      isExpenses: true
     }
   },
-  async mounted() {},
+  async mounted() {
+    await this.$store.dispatch('budget/getTransactionCards', { profileId: this.current })
+  },
   computed: {
     ...mapGetters("profile", ["current"]),
+    ...mapGetters("budget", ["expenses", "income"]),
     transactions: function() {
-      return this.isExpenses ? this.expenses : this.incomes
+      return this.isExpenses ? this.expenses : this.income
     }
   },
   methods: {
     addTransaction: function() {
-      // TODO
-      this.$router.push({ name: 'NewTransaction', params: { budgetId: ''}})
+      this.$router.push({ name: 'NewTransaction', params: { profileId: this.current }})
     }
   }
 };

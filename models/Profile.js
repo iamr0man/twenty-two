@@ -105,7 +105,7 @@ const ProfileScmema = mongoose.Schema({
     {
       category: {
         type: mongoose.Schema.Types.ObjectId,
-        name: 'Category'
+        ref: 'Category'
       },
       money: {
         type: String,

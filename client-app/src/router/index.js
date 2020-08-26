@@ -60,6 +60,7 @@ const routes = [
     name: "NewTransaction",
     component: NewTransaction
   },
+  {
     path: "/Language",
     name: "Language",
     component: Language

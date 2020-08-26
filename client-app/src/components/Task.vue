@@ -16,7 +16,6 @@ export default {
   props: ["task", "parentTask"],
   methods: {
     statusSVG: function(task) {
-      debugger
       return task.status === "completed"
         ? require("../assets/images/checkmark.svg")
         : require("../assets/images/circle.svg");
@@ -32,7 +31,6 @@ export default {
         const subtask = this.parentTask.subtasks.filter(
           v => `${v._id}` === `${task._id}`
         )[0];
-        debugger
         subtask.status = subtask.status === "not finished" ? "completed" : "not finished";
         newTask.isSubtasks = true;
         newTask.subtasks = this.parentTask.subtasks;

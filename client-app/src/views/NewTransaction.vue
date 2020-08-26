@@ -88,7 +88,7 @@ export default {
         notes: this.notes
       }
       await this.$store.dispatch('task/createTaskCard', { profileId: this.current, newNote })
-      this.$router.push({ path: 'Manager '})
+      this.$router.push({ path: 'Manager'})
     }
   }
 };

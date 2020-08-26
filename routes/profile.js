@@ -194,7 +194,7 @@ router.get('/:id/rating/all/', async(req, res) => {
 router.get('/:id/rating/week/', async(req, res) => {
   try {
     let profile = await Profile.findOne({ _id: req.params.id })
-    const rating = profile.rating.slice(0,7).reverse()
+    const rating = profile.rating.reverse().slice(0,7)
     res.status(200).json(rating) 
   } catch (err) {
     console.log(err)
@@ -405,10 +405,10 @@ router.delete('/language/:id', async(req, res) => {
 // })
 
 // @desc   Get all boards
-// @route  GET api/profile/budget/all/:id
-router.get('/budget/all/:id', async(req, res) => {
+// @route  GET api/profile/:id/budget/all/
+router.get('/:id/budget/all/', async(req, res) => {
   try {
-    let profile = await Profile.findOne({ _id: req.params.id })
+    const profile = await Profile.findOne({ _id: req.params.id }).populate('budget.category')
     res.status(200).json(profile.budget) 
   } catch (err) {
     console.log(err)
@@ -416,8 +416,8 @@ router.get('/budget/all/:id', async(req, res) => {
 })
 
 // @desc   Create single task
-// @route  POST api/profile/budget/:id
-router.post('/budget/:id', async(req, res) => {
+// @route  POST api/profile/:id/budget/
+router.post('/:id/budget/', async(req, res) => {
   try {
     const profile = await Profile.findOne({ _id: req.params.id })
 

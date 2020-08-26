@@ -92,14 +92,14 @@
           <p>notes</p>
         </div>
       </router-link>
-      <div class="navigation__item">
+      <router-link to="/budget" class="navigation__item">
         <img src="../assets/images/budget.svg" alt="" class="item__logo" />
         <div class="item__value">budget</div>
         <div class="item__additional">
           324
           <p>transactions</p>
         </div>
-      </div>
+      </router-link>
       <router-link to="/language" class="navigation__item">
         <img src="../assets/images/global.svg" alt="" class="item__logo" />
         <div class="item__value">language</div>
@@ -135,10 +135,9 @@ export default {
       this.labels = this.labels.slice(0+dayNumber+1).concat(this.labels.slice(0,dayNumber+1))
     
       for(let i = 0; i < this.labels.length; i++) {
-        const ratingDate = new Date(this.weekRating[i].createdAt)
-        if(ratingDate.getMonth() === currentDate.getMonth() &&
-          ratingDate.getUTCDate() === currentDate.getUTCDate()) {
-          this.value.unshift(this.weekRating[i].amount)
+        const ratingDateIndex = this.weekRating.findIndex(v => new Date(v.createdAt).getUTCDate() === currentDate.getUTCDate()-i)
+        if( ratingDateIndex > -1) {
+          this.value.unshift(this.weekRating[ratingDateIndex].amount)
         } else {
           this.value.unshift(0)
         }
