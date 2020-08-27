@@ -13,6 +13,9 @@
           {{ v.category.name }}
         </div>
         <div class="item-detail">
+          {{ v.name }}
+        </div>
+        <div class="item-detail">
           {{ v.money }}
         </div>
       </div>
@@ -58,7 +61,10 @@ export default {
 
       &-item {
         display: flex;
-        justify-content: space-evenly
+
+        .item-detail {
+          flex: 0 1 25%;
+        }
       }
     }
 

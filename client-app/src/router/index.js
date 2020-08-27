@@ -56,7 +56,7 @@ const routes = [
     component: Budget
   },
   {
-    path: "/budget/:budgetId/newTransaction",
+    path: "/budget/:profileId/newTransaction",
     name: "NewTransaction",
     component: NewTransaction
   },

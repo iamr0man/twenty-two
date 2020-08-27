@@ -83,6 +83,7 @@ export default {
         name: this.name,
         category: this.category._id,
         money: this.money,
+        notes: this.notes,
         createdAt: new Date()
       }
       await this.$store.dispatch('budget/createTransactionCard', { profileId: this.current, newTransaction })

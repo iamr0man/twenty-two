@@ -409,7 +409,8 @@ router.delete('/language/:id', async(req, res) => {
 router.get('/:id/budget/all/', async(req, res) => {
   try {
     const profile = await Profile.findOne({ _id: req.params.id }).populate('budget.category')
-    res.status(200).json(profile.budget) 
+    const monthlyBudget = profile.budget.reverse().filter(v => new Date(v.createdAt).getMonth() === new Date().getMonth())
+    res.status(200).json(monthlyBudget) 
   } catch (err) {
     console.log(err)
   }

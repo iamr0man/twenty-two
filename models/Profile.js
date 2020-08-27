@@ -107,6 +107,10 @@ const ProfileScmema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
       },
+      name: {
+        type: String,
+        required: true
+      },
       money: {
         type: String,
         required: true

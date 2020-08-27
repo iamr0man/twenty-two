@@ -4,22 +4,14 @@
       <h3>Language Details</h3>
     </div>
     <div class="language__item">
-      <img
-        class="language__item-image"
-        :src="currentLanguage.image"
-        alt="language image"
-      />
       <div class="language__details">
         <youtube ref="youtube" :video-id="videoCode(currentLanguage.videoLink)"></youtube>
         <p class="language__details-description">
-          <span>Words=?:</span> {{ currentLanguage.words.join(' ') }}
+          <span>Article=?:</span> <a :href="currentLanguage.articleLink">{{ currentLanguage.articleLink }}</a>
         </p>
-        <img
-          class="language__details-edit"
-          @click="jumpToDetails"
-          src="../assets/images/pencil.svg"
-          alt="edit pencil"
-        />
+        <p class="language__details-description">
+          <span>Words=?:</span> {{ currentLanguage.words && currentLanguage.words.join(' ') }}
+        </p>
       </div>
     </div>
     <!-- <v-btn color="#2196f382" class="language__add-button">Add</v-btn> -->
@@ -48,7 +40,7 @@ export default {
   },
   methods: {
     videoCode: function(v) {
-      return v.substr(v.indexOf('v=')+2)
+      return v && v.substr(v.indexOf('v=')+2)
     },
     jumpToDetails() {
       this.$router.push({
@@ -69,7 +61,7 @@ export default {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #fa7143;
+  background-color: #5eff00;
 
   &__header {
     border-radius: 10px;
@@ -89,7 +81,7 @@ export default {
     padding: 60px;
     margin: 20px;
     border-radius: 50px;
-    background: #fa7143;
+    background: #5eff00;
     box-shadow: 10px 10px 15px #cfbcbc, -10px -10px 15px #fffefe;
 
     &-image {
@@ -102,7 +94,7 @@ export default {
       padding: 20px;
       margin-top: 16px;
       border-radius: 50px;
-      background: #fa7143;
+      background: #5eff00;
       box-shadow: inset 5px 5px 8px #cfbcbc, inset -5px -5px 12px #fffefe;
 
       p span {
@@ -128,17 +120,13 @@ export default {
     text-align: center;
   }
 
-  iframe {
-    width: 100%;
-  }
-
   @media screen and (min-width: 1000px) {
     height: 100vh;
 
     &__item {
       flex-direction: row;
       align-items: center;
-      max-width: 800px;
+      max-width: 620px;
       padding: 0;
 
       &-image {
@@ -150,5 +138,9 @@ export default {
       }
     }
   }
+}
+
+iframe#widget2 {
+  width: 100% !important;
 }
 </style>
